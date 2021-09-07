@@ -1,4 +1,4 @@
-### 데이터 전처리
+## 데이터 전처리
 
 #### 라벨링 과정 : 기존 xml 형식의 라벨을 txt로 바꾼다.
 
@@ -11,7 +11,7 @@ pip install -r requirements.txt
 
 그 후, xml폴더 안에 가지고 있던 xml 파일들을 넣는다.
 
-classes.txt. 파일에 분류할 class들의 이름을 넣고 cls.txt.로 저장한다.
+classes.txt. 파일에 분류할 class들의 이름을 넣고 [cls.txt](https://lab.ssafy.com/s05-ai-speech/S05P21A603/-/blob/feature/AI-data/AI/%EC%86%8C%EC%8A%A4%EB%8D%B0%EC%9D%B4%ED%84%B0/classes.txt)로 저장한다. 
 
 아래의 명령어를 XmlToTxt 폴더 아래에서 cmd를 이용해 실행한다.
 
@@ -19,5 +19,5 @@ classes.txt. 파일에 분류할 class들의 이름을 넣고 cls.txt.로 저장
 python xmltotxt.py -c cls.txt -xml xml -out out
 ```
 
-결과는 out 폴더에 저장된다.
+결과는 [out](https://lab.ssafy.com/s05-ai-speech/S05P21A603/-/blob/feature/AI-data/AI/%EC%86%8C%EC%8A%A4%EB%8D%B0%EC%9D%B4%ED%84%B0/label.zip) 폴더에 저장된다.
 
