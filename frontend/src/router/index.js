@@ -4,6 +4,8 @@ import Scan from "../views/Scan.vue";
 import Search from "../views/Search.vue";
 import Favorites from "../views/Favorites.vue";
 import Guide from "../views/Guide.vue";
+import FavoriteList from "../components/Favorite/List.vue";
+import FavoriteAdd from "../components/Favorite/Add.vue";
 
 Vue.use(VueRouter);
 
@@ -23,6 +25,17 @@ const routes = [
   {
     path: "/favorites",
     component: Favorites,
+    redirect: "/favorites/list",
+    children: [
+      {
+        path: "list",
+        component: FavoriteList,
+      },
+      {
+        path: "add",
+        component: FavoriteAdd,
+      },
+    ],
   },
   {
     path: "/guide",
