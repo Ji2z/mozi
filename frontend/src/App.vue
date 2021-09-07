@@ -55,6 +55,13 @@ export default {
       mute: false,
     };
   },
+  created() {
+    let path = this.$route.path;
+    if (path.includes("scan")) this.value = "스캔모드";
+    if (path.includes("search")) this.value = "탐색모드";
+    if (path.includes("favorites")) this.value = "즐겨찾기";
+    if (path.includes("guide")) this.value = "사용법";
+  },
 };
 </script>
 
