@@ -1,19 +1,22 @@
 <template>
   <div>
     <v-col cols="12">
-      <v-btn block class="text-h6" to="/favorites/add">음료 추가하기</v-btn>
+      <v-btn block class="text-h6 py-3" to="/favorites/add">
+        음료 추가하기
+      </v-btn>
     </v-col>
     <Detail v-model="detailDialog" :selected="selected" />
     <v-col v-for="(item, i) in favorites" :key="i" cols="12">
-      <v-card class="info">
+      <v-card class="info px-3">
         <v-row class="mb-1">
           <v-col cols="8">
-            <div>
-              <v-card-title v-text="item.name" tabindex="0"></v-card-title>
+            <div class="item-title" tabindex="0">
+              {{ item.name }}
+              <!-- <v-card-title v-text="item.name" tabindex="0"></v-card-title> -->
             </div>
           </v-col>
           <v-spacer></v-spacer>
-          <v-card-actions class="mr-2">
+          <v-card-actions>
             <v-btn
               icon
               @click="openDetailDialog(item)"
