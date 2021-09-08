@@ -21,3 +21,21 @@ python xmltotxt.py -c cls.txt -xml xml -out out
 
 결과는 [out](https://lab.ssafy.com/s05-ai-speech/S05P21A603/-/blob/develop/AI/%EC%86%8C%EC%8A%A4%EB%8D%B0%EC%9D%B4%ED%84%B0/label.zip) 폴더에 저장된다.
 
+
+
+
+
+### 윈도우 환경에서 YOLO v3 설치 및 환경설정
+
+### Yolo Mark : https://github.com/AlexeyAB/Yolo_mark
+
+### darknet : https://github.com/AlexeyAB/darknet
+
+- 환경설정
+  - 참고 자료
+    - https://junsik-hwang.tistory.com/43?category=819242
+    - https://ctkim.tistory.com/81
+  - Compute Capability : 7.5 (NVIDIA GeForce RTX 2060)
+    - 자신에게 맞는 숫자 확인하기 : https://developer.nvidia.com/cuda-gpus#compute
+    - 프로젝트 > 속성 > CUDA C/C++ > Code Generation > **`compute_75,sm_75`** 적용
+  - 결과 : weight 파일을 만들 수 있는 darknet.exe 트레이닝 프로그램 생성
