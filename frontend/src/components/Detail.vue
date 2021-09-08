@@ -1,7 +1,7 @@
 <template>
   <v-dialog :value="value" @input="$emit('input', $event)">
     <v-card>
-      <v-card-title class="text-h5 font-weight-bold" tabindex="0">
+      <v-card-title class="item-title font-weight-bold" tabindex="0">
         {{ selected.name }}
       </v-card-title>
       <v-divider class="accent mx-4"></v-divider>
@@ -62,7 +62,7 @@ export default {
   },
   props: ["value", "selected"],
   updated() {
-    console.log("Detail updated()");
+    // console.log("Detail updated()");
     // console.log(this.selected);
     this.beverage.name = this.selected.name;
   },

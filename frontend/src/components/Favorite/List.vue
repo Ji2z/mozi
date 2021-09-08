@@ -10,7 +10,7 @@
       <v-card class="info px-3">
         <v-row class="mb-1">
           <v-col cols="8">
-            <div class="text-h6 font-weight-bold" tabindex="0">
+            <div class="item-title" tabindex="0">
               {{ item.name }}
               <!-- <v-card-title v-text="item.name" tabindex="0"></v-card-title> -->
             </div>
