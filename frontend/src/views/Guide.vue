@@ -1,12 +1,8 @@
 <template>
   <div>
     <v-expansion-panels class="pa-4">
-      <v-expansion-panel
-        v-for="(item, i) in guides"
-        :key="i"
-        class="mb-4 secondary"
-      >
-        <v-expansion-panel-header class="text-h6">
+      <v-expansion-panel v-for="(item, i) in guides" :key="i" class="mb-4 info">
+        <v-expansion-panel-header class="text-h6 font-weight-bold">
           {{ item.title }}
         </v-expansion-panel-header>
         <v-expansion-panel-content tabindex="0">

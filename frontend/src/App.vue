@@ -66,6 +66,10 @@ export default {
 </script>
 
 <style>
+@import url(//fonts.googleapis.com/earlyaccess/jejugothic.css);
+* {
+  font-family: "Jeju Gothic";
+}
 .toggle {
   float: left;
   position: absolute;

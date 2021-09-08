@@ -1,11 +1,11 @@
 <template>
   <v-dialog :value="value" @input="$emit('input', $event)">
     <v-card>
-      <v-card-title class="text-h5" tabindex="0">
+      <v-card-title class="text-h5 font-weight-bold" tabindex="0">
         {{ selected.name }}
       </v-card-title>
       <v-divider class="accent mx-4"></v-divider>
-      <v-card-text>
+      <v-card-text class="text-body-1">
         <v-container class="info-box">
           <v-row tabindex="0">
             <v-col class="font-weight-bold" cols="4">종류</v-col>
