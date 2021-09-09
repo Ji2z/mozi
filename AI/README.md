@@ -148,6 +148,6 @@ python xmltotxt.py -c cls.txt -xml xml -out out
   - 결과 (진행중)
     - loss chart
     
-      ![cmd](/uploads/d6091af3999c1b7a0320aec2fd51dd45/1.PNG)
+      <img src = "/uploads/d6091af3999c1b7a0320aec2fd51dd45/1.PNG" width="40%" height="40%">
     
-      ![chart](/uploads/51c994419f3b3d4ceae2d9fc7defa3b4/2.PNG)
+      <img src = "/uploads/51c994419f3b3d4ceae2d9fc7defa3b4/2.PNG" width="40%" height="40%">
