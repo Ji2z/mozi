@@ -11,7 +11,6 @@
           <span>ON</span>
         </v-btn>
       </div>
-      <!-- <span class="mx-auto" dark>{{ value }}</span> -->
       <v-toolbar-title class="mx-auto" tabindex="0">
         {{ value }}
       </v-toolbar-title>
@@ -21,7 +20,14 @@
       <router-view />
     </v-main>
 
-    <v-bottom-navigation app v-model="value" class="primary" grow dark>
+    <v-bottom-navigation
+      app
+      v-model="value"
+      class="primary"
+      active-class="accent primary--text font-weight-bold"
+      grow
+      dark
+    >
       <v-btn value="스캔모드" to="/scan">
         <span>스캔모드</span>
         <v-icon>mdi-cube-scan</v-icon>
@@ -66,8 +72,15 @@ export default {
 </script>
 
 <style>
+@import url(//fonts.googleapis.com/earlyaccess/jejugothic.css);
+* {
+  font-family: "Jeju Gothic";
+}
 .toggle {
   float: left;
   position: absolute;
+}
+.item-title {
+  font-size: 1.25em !important;
 }
 </style>

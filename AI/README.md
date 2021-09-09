@@ -46,7 +46,7 @@ python xmltotxt.py -c cls.txt -xml xml -out out
     - 프로젝트 > 속성 > CUDA C/C++ > Code Generation > **`compute_75,sm_75`** 적용
   - 결과 : weight 파일을 만들 수 있는 darknet.exe 트레이닝 프로그램 생성
     - 내장된 demo 파일 **`darknet_web_cam_voc.cmd`** 실행
-    - ![컵 결과](/capture/sample.png)
+    <img src = "/uploads/d35b721a0227fe8906a3e018f685b540/sample.png" width="30%" height="30%">
 
 
 
