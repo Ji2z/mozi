@@ -48,3 +48,102 @@ python xmltotxt.py -c cls.txt -xml xml -out out
     - 내장된 demo 파일 **`darknet_web_cam_voc.cmd`** 실행
     - ![컵 결과](/capture/sample.png)
 
+
+
+<hr>
+
+## YOLO v3 데이터 학습을 통한 weights 파일 만들기
+
+- darknet-master\build\darknet\x64\data 구조
+
+  ```
+  |--data
+  	|-- img
+  		|-- 학습 이미지 및 라벨링 데이터 (ex> 1.jpg, 1.txt)
+  	|-- darknet53.conv.74 (다운로드 경로 : pjreddie.com/media/files/darknet53.conv.74)
+  	|-- obj.data
+  	|-- obj.names
+  	|-- train.txt
+  ```
+
+
+
+- obj.data : 설정
+
+  ```
+  classes= 112
+  train  = data/train.txt
+  valid  = data/train.txt
+  names = data/obj.names
+  backup = backup/
+  ```
+
+  
+
+- obj.names : 라벨링 될 이름
+
+  ```
+  TOP 마스터라떼*캔
+  TOP 스위트아메리카노*캔
+  갈아만든 배*캔
+  갈아만든 배*캔
+  갈아만든 배*페트병
+  갈아만든 배*페트병
+  게토레이 블루볼트*페트병
+  게토레이*캔
+  게토레이 블루볼트*페트병
+  게토레이*페트병
+  ...
+  ```
+
+
+
+- train.txt : 학습할 이미지 경로
+
+  ```
+  data/img/10016_0_m_1.jpg
+  data/img/10016_0_m_10.jpg
+  data/img/10016_0_m_12.jpg
+  data/img/10016_0_m_13.jpg
+  data/img/10016_0_m_14.jpg
+  data/img/10016_0_m_16.jpg
+  ...
+  ```
+
+
+
+- yolov3.cfg 파일 수정 부분
+
+  - batch=64
+
+  - subdivisions=64
+
+  - classes = 112
+
+  - num = 3
+
+  - filters = (112+5)*3 = 351
+
+  - anchors = 106,219, 128,200,  89,299, 132,247, 109,317, 138,304, 126,388, 183,385, 242,391
+
+    ```
+    cmd 창에서 아래 명령어 입력 시 anchors 출력
+    darknet.exe detector calc_anchors data/obj.data -num_of_clusters 9 -width 416 -height 416
+    ```
+
+
+
+- 학습 시작
+
+  ```
+  1. darknet-master/build/darknet/x64 에서 cmd 열기
+  
+  2. 아래의 명령어 입력
+  	darknet.exe detector train data\obj.data testcfg\yolov3.cfg data\darknet53.conv.74  -gpu 0
+  	
+  2-1. 다시 학습을 이어갈 경우
+  	darknet detector train data\obj.data testcfg\yolov3.cfg backup/______.weights -gpu 0
+  ```
+
+  - 결과 (진행중)
+    - loss chart
