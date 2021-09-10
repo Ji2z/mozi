@@ -158,10 +158,11 @@ python xmltotxt.py -c cls.txt -xml xml -out out
   - 2988 x 2988 -> 80 x 80
   - <img src = "/uploads/ec7c6aebf8ca48501b89ca04646c8963/30017_0_s_1.jpg" width="80px" height="80px">
 - 클래스 개수 조절
-  - classes = 2
+  - classses = 112 	-> 	classes = 2
 - 이미지 개수 조절
-  -  115개
+  -  12,765 개 	->	 115개
 - 변경사항
   - 프론트엔드와 백엔드 통신 원활을 위한 Tensorflow.js 사용 계획
   - 이미지 사이즈 조절을 위한 label size및 bndbox 태그 값 수정
-    - (링크)resize_xml.ipynb
+    - [resize_xml.ipynb](https://lab.ssafy.com/s05-ai-speech/S05P21A603/-/blob/develop/AI/%EC%86%8C%EC%8A%A4%EB%8D%B0%EC%9D%B4%ED%84%B0/resize_xml.ipynb)
+
