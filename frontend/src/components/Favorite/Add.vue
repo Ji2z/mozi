@@ -16,7 +16,8 @@ export default {
     return {};
   },
   beforeRouteLeave(to, from, next) {
-    this.$refs.camera.stopCameraStream();
+    this.$refs.video.stopCameraStream();
+    //this.$refs.camera.stopCameraStream();
     next();
   },
 };
