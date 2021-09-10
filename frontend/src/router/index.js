@@ -25,10 +25,9 @@ const routes = [
   {
     path: "/favorites",
     component: Favorites,
-    redirect: "/favorites/list",
     children: [
       {
-        path: "list",
+        path: "",
         component: FavoriteList,
       },
       {
