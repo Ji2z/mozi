@@ -1,4 +1,4 @@
-## 데이터 전처리
+## 데이터 전처리  	2021.09.07(화)
 
 #### 라벨링 과정 : 기존 xml 형식의 라벨을 txt로 바꾼다.
 
@@ -25,7 +25,7 @@ python xmltotxt.py -c cls.txt -xml xml -out out
 
 <hr>
 
-## 윈도우 환경에서 YOLO v3 설치 및 환경설정
+## 윈도우 환경에서 YOLO v3 설치 및 환경설정    2021.09.08(수)
 
 > ### Yolo Mark : https://github.com/AlexeyAB/Yolo_mark
 >
@@ -52,7 +52,7 @@ python xmltotxt.py -c cls.txt -xml xml -out out
 
 <hr>
 
-## YOLO v3 데이터 학습을 통한 weights 파일 만들기
+## YOLO v3 데이터 학습을 통한 weights 파일 만들기     2021.09.09(목)
 
 - darknet-master\build\darknet\x64\data 구조
 
@@ -151,3 +151,17 @@ python xmltotxt.py -c cls.txt -xml xml -out out
       <img src = "/uploads/d6091af3999c1b7a0320aec2fd51dd45/1.PNG" width="40%" height="40%">
     
       <img src = "/uploads/51c994419f3b3d4ceae2d9fc7defa3b4/2.PNG" width="40%" height="40%">
+
+## 학습 가속화를 위한 방법 찾기     2021.09.10(금)
+
+- 이미지 사이즈 조정
+  - 2988 x 2988 -> 80 x 80
+  - <img src = "/uploads/ec7c6aebf8ca48501b89ca04646c8963/30017_0_s_1.jpg" width="80px" height="80px">
+- 클래스 개수 조절
+  - classes = 2
+- 이미지 개수 조절
+  -  115개
+- 변경사항
+  - 프론트엔드와 백엔드 통신 원활을 위한 Tensorflow.js 사용 계획
+  - 이미지 사이즈 조절을 위한 label size및 bndbox 태그 값 수정
+    - (링크)resize_xml.ipynb
