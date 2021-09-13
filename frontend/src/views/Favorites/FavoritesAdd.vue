@@ -5,10 +5,10 @@
 </template>
 
 <script>
-import Camera from "../Camera.vue";
+import Camera from "../../components/Camera.vue";
 
 export default {
-  name: "FavoriteScan",
+  name: "FavoriteAdd",
   components: {
     Camera,
   },

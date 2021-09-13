@@ -2,7 +2,7 @@
   <v-dialog :value="value" @input="$emit('input', $event)">
     <v-card>
       <v-card-title class="item-title font-weight-bold" tabindex="0">
-        {{ getProduct.name }}
+        {{ getProduct.name }} ({{ getProduct.type }})
       </v-card-title>
       <v-divider class="accent mx-4"></v-divider>
       <v-card-text class="text-body-1">
@@ -52,7 +52,9 @@ export default {
   data() {
     return {};
   },
-  props: ["value"],
+  props: {
+    value: Boolean,
+  },
   computed: {
     ...mapGetters(["getProduct"]),
   },
