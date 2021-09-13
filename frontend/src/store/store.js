@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import axios from "axios";
 
 Vue.use(Vuex);
 
@@ -7,12 +8,13 @@ export const store = new Vuex.Store({
   state: {
     product: {
       name: "",
+      type: "",
       category: "",
       company: "",
       service_tel: "",
       allergy: "",
-      caution: null,
-      comparision: null,
+      caution: "",
+      comparison: "",
     },
   },
   getters: {
@@ -21,32 +23,33 @@ export const store = new Vuex.Store({
     },
   },
   mutations: {
+    clear(state) {
+      state.product = {};
+    },
     getProductDetail(state, product) {
       state.product = {
         name: product.name,
-        category: "종류",
-        company: "제조사",
-        service_tel: "고객센터",
-        allergy: "성분주의",
-        caution: null,
-        comparision: null,
+        type: product.type,
+        category: product.category,
+        company: product.company,
+        service_tel: product.serviceTel,
+        allergy: product.allergy,
+        caution: product.caution,
+        comparison: product.comparison,
       };
     },
   },
   actions: {
-    getProductDetail({ commit }, product) {
-      commit("getProductDetail", product);
+    async getProductDetail({ commit }, product) {
+      commit("clear");
+      let url = "/api/beverage/search";
+      const res = await axios.get(url, {
+        params: {
+          name: product.name,
+          type: product.type,
+        },
+      });
+      commit("getProductDetail", res.data);
     },
-    // for axios
-    // async getProductDetail({ commit }, product) {
-    //   let url = "";
-    //   const res = await axios.get(url, {
-    //     params: {
-    //       name: product.name,
-    //       type: product.type,
-    //     },
-    //   });
-    //   commit("getProductDetail", res);
-    // },
   },
 });

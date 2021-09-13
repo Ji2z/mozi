@@ -30,7 +30,6 @@
             <v-dialog
               v-if="mode == 'favorite'"
               :retain-focus="false"
-              @hide="hideDialog()"
               v-model="dialog[i]"
             >
               <template v-slot:activator="{ on }">
@@ -77,7 +76,7 @@ export default {
   data() {
     return {
       detailDialog: false,
-      dialog: [false, false, false],
+      dialog: [],
       favorites: [
         {
           name: "갈아만든 배",
@@ -91,14 +90,17 @@ export default {
           name: "코카콜라",
           type: "캔",
         },
+        {
+          name: "몬스터에너지 울트라",
+          type: "캔",
+        },
       ],
-      selected: "",
     };
   },
   methods: {
     ...mapActions(["getProductDetail"]),
-    openDetailDialog(item) {
-      this.getProductDetail(item);
+    async openDetailDialog(item) {
+      await this.getProductDetail(item);
       this.detailDialog = true;
     },
     closeDeleteDialog(idx) {

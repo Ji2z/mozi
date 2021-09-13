@@ -5,7 +5,7 @@
         {{ getProduct.name }} ({{ getProduct.type }})
       </v-card-title>
       <v-divider class="accent mx-4"></v-divider>
-      <v-card-text class="text-body-1">
+      <v-card-text class="text-body-1 detail">
         <v-container class="info-box">
           <v-row tabindex="0">
             <v-col class="font-weight-bold" cols="4">종류</v-col>
@@ -25,11 +25,11 @@
           </v-row>
           <v-row v-if="getProduct.caution" tabindex="0">
             <v-col class="font-weight-bold" cols="4">주의사항</v-col>
-            <v-col cols="8">{{ beverage.caution }}</v-col>
+            <v-col cols="8">{{ getProduct.caution }}</v-col>
           </v-row>
-          <v-row v-if="getProduct.comparision" tabindex="0">
+          <v-row v-if="getProduct.comparison" tabindex="0">
             <v-col class="font-weight-bold" cols="4">비교</v-col>
-            <v-col cols="8">{{ getProduct.comparision }}</v-col>
+            <v-col cols="8">{{ getProduct.comparison }}</v-col>
           </v-row>
         </v-container>
       </v-card-text>
@@ -64,5 +64,9 @@ export default {
 <style>
 .info-box {
   padding: 24px 0px 0px 0px !important;
+}
+.detail {
+  max-height: 350px;
+  overflow: scroll;
 }
 </style>
