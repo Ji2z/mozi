@@ -1,35 +1,35 @@
 <template>
   <v-dialog :value="value" @input="$emit('input', $event)">
     <v-card>
-      <v-card-title class="text-h5" tabindex="0">
-        {{ selected.name }}
+      <v-card-title class="item-title font-weight-bold" tabindex="0">
+        {{ getProduct.name }} ({{ getProduct.type }})
       </v-card-title>
       <v-divider class="accent mx-4"></v-divider>
-      <v-card-text>
+      <v-card-text class="text-body-1 detail">
         <v-container class="info-box">
           <v-row tabindex="0">
             <v-col class="font-weight-bold" cols="4">종류</v-col>
-            <v-col cols="8">{{ beverage.category }}</v-col>
+            <v-col cols="8">{{ getProduct.category }}</v-col>
           </v-row>
           <v-row tabindex="0">
             <v-col class="font-weight-bold" cols="4">제조사</v-col>
-            <v-col cols="8">{{ beverage.company }}</v-col>
+            <v-col cols="8">{{ getProduct.company }}</v-col>
           </v-row>
           <v-row tabindex="0">
             <v-col class="font-weight-bold" cols="4">고객센터</v-col>
-            <v-col cols="8">{{ beverage.service_tel }}</v-col>
+            <v-col cols="8">{{ getProduct.service_tel }}</v-col>
           </v-row>
           <v-row tabindex="0">
             <v-col class="font-weight-bold" cols="4">성분주의</v-col>
-            <v-col cols="8">{{ beverage.allergy }}</v-col>
+            <v-col cols="8">{{ getProduct.allergy }}</v-col>
           </v-row>
-          <v-row v-if="beverage.caution" tabindex="0">
+          <v-row v-if="getProduct.caution" tabindex="0">
             <v-col class="font-weight-bold" cols="4">주의사항</v-col>
-            <v-col cols="8">{{ beverage.caution }}</v-col>
+            <v-col cols="8">{{ getProduct.caution }}</v-col>
           </v-row>
-          <v-row v-if="beverage.comparision" tabindex="0">
+          <v-row v-if="getProduct.comparison" tabindex="0">
             <v-col class="font-weight-bold" cols="4">비교</v-col>
-            <v-col cols="8">{{ beverage.comparision }}</v-col>
+            <v-col cols="8">{{ getProduct.comparison }}</v-col>
           </v-row>
         </v-container>
       </v-card-text>
@@ -45,26 +45,18 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   name: "Detail",
   data() {
-    return {
-      beverage: {
-        name: "",
-        category: "종류",
-        company: "제조사",
-        service_tel: "고객센터",
-        allergy: "성분주의",
-        caution: null,
-        comparision: null,
-      },
-    };
+    return {};
   },
-  props: ["value", "selected"],
-  updated() {
-    console.log("Detail updated()");
-    // console.log(this.selected);
-    this.beverage.name = this.selected.name;
+  props: {
+    value: Boolean,
+  },
+  computed: {
+    ...mapGetters(["getProduct"]),
   },
 };
 </script>
@@ -72,5 +64,9 @@ export default {
 <style>
 .info-box {
   padding: 24px 0px 0px 0px !important;
+}
+.detail {
+  max-height: 350px;
+  overflow: scroll;
 }
 </style>

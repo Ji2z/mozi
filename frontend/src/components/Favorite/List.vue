@@ -56,7 +56,6 @@
 
 <script>
 import Detail from "../Detail.vue";
-// import speak from "@/plugins/speech.js";
 
 export default {
   name: "FavoriteList",
@@ -89,9 +88,6 @@ export default {
   },
   methods: {
     openDetailDialog(item) {
-      // await speak(item.name);
-      var msg = new SpeechSynthesisUtterance(item.name);
-      window.speechSynthesis.speak(msg);
       this.detailDialog = true;
       this.selected = item;
     },
