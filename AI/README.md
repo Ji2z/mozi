@@ -177,3 +177,7 @@ python xmltotxt.py -c cls.txt -xml xml -out out
 - protoc 3.17.3 설치
 - label에 xmax, xmin, ymax, ymin을 int형으로 변경
 - label을 영어로 변경
+
+<img src = "/uploads/3ba0a9f5a26158578f7dc6d0a3a13ee3/2.PNG" width="40%" height="40%">
+
+<img src = "/uploads/246cdb85855fd66030195b90f4ea248f/1.PNG" width="40%" height="40%">
