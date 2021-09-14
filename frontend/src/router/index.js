@@ -1,11 +1,11 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Scan from "../views/Scan.vue";
-import Search from "../views/Search.vue";
-import Favorites from "../views/Favorites.vue";
-import Guide from "../views/Guide.vue";
-import FavoriteList from "../components/Favorite/List.vue";
-import FavoriteAdd from "../components/Favorite/Add.vue";
+import Scan from "../views/Scan";
+import Search from "../views/Search";
+import Guide from "../views/Guide";
+import Favorites from "../views/Favorites";
+import FavoritesList from "../views/Favorites/FavoritesList";
+import FavoritesAdd from "../views/Favorites/FavoritesAdd";
 
 Vue.use(VueRouter);
 
@@ -28,11 +28,11 @@ const routes = [
     children: [
       {
         path: "",
-        component: FavoriteList,
+        component: FavoritesList,
       },
       {
         path: "add",
-        component: FavoriteAdd,
+        component: FavoritesAdd,
       },
     ],
   },
