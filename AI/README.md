@@ -181,3 +181,32 @@ python xmltotxt.py -c cls.txt -xml xml -out out
 <img src = "/uploads/3ba0a9f5a26158578f7dc6d0a3a13ee3/2.PNG" width="50%" height="50%">
 
 <img src = "/uploads/246cdb85855fd66030195b90f4ea248f/1.PNG" width="30%" height="30%">
+
+<hr>
+
+## TensorFlow Object Detection 데모 테스트 2021.09.15(수)
+
+- 밀키스, 사이다 각각 115장의 이미지와 라벨 training
+
+- ssd_mobilenet_v2 fine tunning
+
+- optimizer : Adam
+
+  - momentum을 사용했을 경우 loss 값이 제대로 떨어지지 않고 발산해버려서 실패
+
+- num of steps : 10000
+
+- 최종 loss : 
+
+  ```
+  - classification_loss : 0.14581043
+  - localization_loss : 0.12596826
+  - regularization_loss : 0.0814036
+  - total_loss : 0.3530823
+  - learning_rate : 3e-08
+  ```
+
+- 결과
+  - 사진
+  - 사진
+  - 저장된 모델(ckpt 및 pb) → [my_model](./my_model)
