@@ -207,6 +207,7 @@ python xmltotxt.py -c cls.txt -xml xml -out out
   ```
 
 - 결과
-  - 사진
-  - 사진
+  - <img src = "/uploads/332adcffe51c15bc97faf13988bbb555/3.png" width="50%" height="50%">
+  - <img src = "/uploads/63becaad82d94f2f9e9724e9cc14f35c/6.png" width="50%" height="50%">
+  - <img src = "/uploads/18a61c0ab731e0a972fb90977cbf033e/8.png" width="50%" height="50%">
   - 저장된 모델(ckpt 및 pb) → [my_model](./my_model)
