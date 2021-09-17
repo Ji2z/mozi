@@ -40,16 +40,14 @@ export default {
 </script>
 
 <style lang="scss">
-.video-container 
-{
+.video-container {
   position: absolute;
   height: 100%;
   width: 100%;
   overflow: hidden;
 }
 
-.video-container video 
-{
+.video-container video {
   min-width: 100%;
   min-height: 100%;
 }

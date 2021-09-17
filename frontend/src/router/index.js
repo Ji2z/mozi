@@ -1,9 +1,11 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Scan from "../views/Scan.vue";
-import Search from "../views/Search.vue";
-import Favorites from "../views/Favorites.vue";
-import Guide from "../views/Guide.vue";
+import Scan from "../views/Scan";
+import Search from "../views/Search";
+import Guide from "../views/Guide";
+import Favorites from "../views/Favorites";
+import FavoritesList from "../views/Favorites/FavoritesList";
+import FavoritesAdd from "../views/Favorites/FavoritesAdd";
 
 Vue.use(VueRouter);
 
@@ -15,18 +17,43 @@ const routes = [
   {
     path: "/scan",
     component: Scan,
+    meta: {
+      title: "스캔모드 - mozi",
+    },
   },
   {
     path: "/search",
     component: Search,
+    meta: {
+      title: "탐색모드 - mozi",
+    },
   },
   {
     path: "/favorites",
     component: Favorites,
+    children: [
+      {
+        path: "",
+        component: FavoritesList,
+        meta: {
+          title: "즐겨찾기 목록 - mozi",
+        },
+      },
+      {
+        path: "add",
+        component: FavoritesAdd,
+        meta: {
+          title: "즐겨찾기 추가 - mozi",
+        },
+      },
+    ],
   },
   {
     path: "/guide",
     component: Guide,
+    meta: {
+      title: "사용법 - mozi",
+    },
   },
 ];
 
@@ -34,6 +61,12 @@ const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes,
+});
+
+router.afterEach((to) => {
+  Vue.nextTick(() => {
+    document.title = to.meta.title;
+  });
 });
 
 export default router;

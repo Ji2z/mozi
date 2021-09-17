@@ -1,23 +1,33 @@
 <template>
   <v-app>
     <v-app-bar app color="primary" dark flat>
-      <v-btn v-if="mute" @click="mute = !mute">
-        <v-icon color="accent">mdi-volume-off</v-icon>
-        <span>OFF</span>
-      </v-btn>
-      <v-btn v-else @click="mute = !mute">
-        <v-icon color="accent">mdi-volume-high</v-icon>
-        <span>ON</span>
-      </v-btn>
-      <!-- <span class="mx-auto" dark>{{ value }}</span> -->
-      <v-toolbar-title class="mx-auto">{{ value }}</v-toolbar-title>
+      <div class="toggle">
+        <v-btn v-if="mute" @click="mute = !mute">
+          <v-icon color="accent">mdi-volume-off</v-icon>
+          <span>OFF</span>
+        </v-btn>
+        <v-btn v-else @click="mute = !mute">
+          <v-icon color="accent">mdi-volume-high</v-icon>
+          <span>ON</span>
+        </v-btn>
+      </div>
+      <v-toolbar-title class="mx-auto" tabindex="0">
+        {{ value }}
+      </v-toolbar-title>
     </v-app-bar>
 
     <v-main>
       <router-view />
     </v-main>
 
-    <v-bottom-navigation app v-model="value" class="secondary" grow>
+    <v-bottom-navigation
+      app
+      v-model="value"
+      class="primary"
+      active-class="accent primary--text font-weight-bold"
+      grow
+      dark
+    >
       <v-btn value="스캔모드" to="/scan">
         <span>스캔모드</span>
         <v-icon>mdi-cube-scan</v-icon>
@@ -47,9 +57,30 @@ export default {
 
   data() {
     return {
-      value: "scan",
+      value: "스캔모드",
       mute: false,
     };
   },
+  created() {
+    let path = this.$route.path;
+    if (path.includes("scan")) this.value = "스캔모드";
+    if (path.includes("search")) this.value = "탐색모드";
+    if (path.includes("favorites")) this.value = "즐겨찾기";
+    if (path.includes("guide")) this.value = "사용법";
+  },
 };
 </script>
+
+<style>
+@import url(//fonts.googleapis.com/earlyaccess/jejugothic.css);
+* {
+  font-family: "Jeju Gothic";
+}
+.toggle {
+  float: left;
+  position: absolute;
+}
+.item-title {
+  font-size: 1.25em !important;
+}
+</style>
