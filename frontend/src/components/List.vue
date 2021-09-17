@@ -1,7 +1,12 @@
 <template>
   <div>
     <v-col cols="12" v-if="mode == 'favorite'">
-      <v-btn block class="text-h6 py-3" to="/favorites/add">
+      <v-btn
+        block
+        class="text-h6 py-3"
+        to="/favorites/add"
+        aria-label="음료 추가하기 버튼"
+      >
         음료 추가하기
       </v-btn>
     </v-col>
@@ -33,7 +38,7 @@
               v-model="dialog[i]"
             >
               <template v-slot:activator="{ on }">
-                <v-btn icon color="red" aria-label="삭제 버튼" v-on="on">
+                <v-btn icon color="red" aria-label="음료 삭제 버튼" v-on="on">
                   <v-icon>mdi-delete</v-icon>
                 </v-btn>
               </template>
@@ -49,8 +54,20 @@
 
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn text @click="closeDeleteDialog(i)">취소</v-btn>
-                  <v-btn text @click="deleteItem(item, i)">승인</v-btn>
+                  <v-btn
+                    text
+                    @click="closeDeleteDialog(i)"
+                    aria-label="삭제 취소"
+                  >
+                    취소
+                  </v-btn>
+                  <v-btn
+                    text
+                    @click="deleteItem(item, i)"
+                    aria-label="삭제 승인"
+                  >
+                    승인
+                  </v-btn>
                 </v-card-actions>
               </v-card>
             </v-dialog>

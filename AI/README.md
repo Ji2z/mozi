@@ -27,7 +27,7 @@ python xmltotxt.py -c cls.txt -xml xml -out out
 
 ## 윈도우 환경에서 YOLO v3 설치 및 환경설정    2021.09.08(수)
 
-> ### Yolo Mark : https://github.com/AlexeyAB/Yolo_mark
+> **Yolo Mark : https://github.com/AlexeyAB/Yolo_mark**
 >
 > **darknet : https://github.com/AlexeyAB/darknet**
 
@@ -152,6 +152,8 @@ python xmltotxt.py -c cls.txt -xml xml -out out
     
       <img src = "/uploads/51c994419f3b3d4ceae2d9fc7defa3b4/2.PNG" width="40%" height="40%">
 
+<hr>
+
 ## 학습 가속화를 위한 방법 찾기     2021.09.10(금)
 
 - 이미지 사이즈 조정
@@ -160,9 +162,52 @@ python xmltotxt.py -c cls.txt -xml xml -out out
 - 클래스 개수 조절
   - classses = 112 	-> 	classes = 2
 - 이미지 개수 조절
-  -  12,765 개 	->	 115개
+  - 12,765 개 	->	 115개
 - 변경사항
   - 프론트엔드와 백엔드 통신 원활을 위한 Tensorflow.js 사용 계획
   - 이미지 사이즈 조절을 위한 label size및 bndbox 태그 값 수정
     - [resize_xml.ipynb](https://lab.ssafy.com/s05-ai-speech/S05P21A603/-/blob/develop/AI/%EC%86%8C%EC%8A%A4%EB%8D%B0%EC%9D%B4%ED%84%B0/resize_xml.ipynb)
 
+<hr>
+
+## TensorFlow.js 사용을 위한 환경설정 2021.09.14(화)
+
+- Cuda Toolkit 11.2로 변경
+- cudnn 3.8로 변경
+- protoc 3.17.3 설치
+- label에 xmax, xmin, ymax, ymin을 int형으로 변경
+- label을 영어로 변경
+
+<img src = "/uploads/3ba0a9f5a26158578f7dc6d0a3a13ee3/2.PNG" width="50%" height="50%">
+
+<img src = "/uploads/246cdb85855fd66030195b90f4ea248f/1.PNG" width="30%" height="30%">
+
+<hr>
+
+## TensorFlow Object Detection 데모 테스트 2021.09.15(수)
+
+- 밀키스, 사이다 각각 115장의 이미지와 라벨 training
+
+- ssd_mobilenet_v2 fine tunning
+
+- optimizer : Adam
+
+  - momentum을 사용했을 경우 loss 값이 제대로 떨어지지 않고 발산해버려서 실패
+
+- num of steps : 10000
+
+- 최종 loss : 
+
+  ```
+  - classification_loss : 0.14581043
+  - localization_loss : 0.12596826
+  - regularization_loss : 0.0814036
+  - total_loss : 0.3530823
+  - learning_rate : 3e-08
+  ```
+
+- 결과
+  - <img src = "/uploads/332adcffe51c15bc97faf13988bbb555/3.png" width="30%" height="30%">
+  - <img src = "/uploads/63becaad82d94f2f9e9724e9cc14f35c/6.png" width="30%" height="30%">
+  - <img src = "/uploads/18a61c0ab731e0a972fb90977cbf033e/8.png" width="50%" height="50%">
+  - 저장된 모델(ckpt 및 pb) → [my_model](./my_model)
