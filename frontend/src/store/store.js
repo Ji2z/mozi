@@ -16,10 +16,14 @@ export const store = new Vuex.Store({
       caution: "",
       comparison: "",
     },
+    mute: null,
   },
   getters: {
     getProduct: (state) => {
       return state.product;
+    },
+    getMute: (state) => {
+      return state.mute;
     },
   },
   mutations: {
@@ -38,6 +42,9 @@ export const store = new Vuex.Store({
         comparison: product.comparison,
       };
     },
+    STORE_MUTE(state, mute) {
+      state.mute = mute;
+    },
   },
   actions: {
     async getProductDetail({ commit }, product) {
@@ -50,6 +57,9 @@ export const store = new Vuex.Store({
         },
       });
       commit("getProductDetail", res.data);
+    },
+    storeMute({ commit }, mute) {
+      commit("STORE_MUTE", mute);
     },
   },
 });

@@ -49,9 +49,6 @@ import { mapGetters } from "vuex";
 
 export default {
   name: "Detail",
-  data() {
-    return {};
-  },
   props: {
     value: Boolean,
   },

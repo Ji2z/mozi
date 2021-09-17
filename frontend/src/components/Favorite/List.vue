@@ -88,6 +88,9 @@ export default {
   },
   methods: {
     openDetailDialog(item) {
+      console.log(item.name);
+      var msg = new SpeechSynthesisUtterance(item.name);
+      window.speechSynthesis.speak(msg);
       this.detailDialog = true;
       this.selected = item;
     },

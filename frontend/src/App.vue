@@ -2,11 +2,11 @@
   <v-app>
     <v-app-bar app color="primary" dark flat>
       <div class="toggle">
-        <v-btn v-if="mute" @click="mute = !mute">
+        <v-btn v-if="!mute" @click="changeMute">
           <v-icon color="accent">mdi-volume-off</v-icon>
           <span>OFF</span>
         </v-btn>
-        <v-btn v-else @click="mute = !mute">
+        <v-btn v-else @click="changeMute">
           <v-icon color="accent">mdi-volume-high</v-icon>
           <span>ON</span>
         </v-btn>
@@ -52,6 +52,8 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   name: "App",
 
@@ -60,6 +62,14 @@ export default {
       value: "스캔모드",
       mute: false,
     };
+  },
+  methods: {
+    ...mapActions(["storeMute"]),
+    changeMute() {
+      if (this.mute) this.mute = false;
+      else this.mute = true;
+      this.storeMute(this.mute);
+    },
   },
   created() {
     let path = this.$route.path;
