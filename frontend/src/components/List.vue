@@ -124,7 +124,6 @@ export default {
       this.$set(this.dialog, idx, false);
     },
     deleteItem(item, idx) {
-      // localStorage.removeItem(item.name + "*" + item.type);
       this.$set(this.dialog, idx, false);
     },
   },

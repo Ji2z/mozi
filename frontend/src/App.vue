@@ -52,6 +52,8 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   name: "App",
 
@@ -60,6 +62,14 @@ export default {
       value: "스캔모드",
       mute: false,
     };
+  },
+  methods: {
+    ...mapActions(["storeMute"]),
+    changeMute() {
+      if (this.mute) this.mute = false;
+      else this.mute = true;
+      this.storeMute(this.mute);
+    },
   },
   created() {
     let path = this.$route.path;
