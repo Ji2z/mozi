@@ -2,11 +2,11 @@
   <v-app>
     <v-app-bar app color="primary" dark flat>
       <div class="toggle">
-        <v-btn v-if="mute" @click="mute = !mute">
+        <v-btn v-if="mute" @click="mute = !mute" aria-label="음성 안내 켜기">
           <v-icon color="accent">mdi-volume-off</v-icon>
           <span>OFF</span>
         </v-btn>
-        <v-btn v-else @click="mute = !mute">
+        <v-btn v-else @click="mute = !mute" aria-label="음성 안내 끄기">
           <v-icon color="accent">mdi-volume-high</v-icon>
           <span>ON</span>
         </v-btn>
@@ -28,22 +28,22 @@
       grow
       dark
     >
-      <v-btn value="스캔모드" to="/scan">
+      <v-btn value="스캔모드" to="/scan" aria-label="스캔모드">
         <span>스캔모드</span>
         <v-icon>mdi-cube-scan</v-icon>
       </v-btn>
 
-      <v-btn value="탐색모드" to="/search">
+      <v-btn value="탐색모드" to="/search" aria-label="탐색모드">
         <span>탐색모드</span>
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
 
-      <v-btn value="즐겨찾기" to="/favorites">
+      <v-btn value="즐겨찾기" to="/favorites" aria-label="즐겨찾기">
         <span>즐겨찾기</span>
         <v-icon>mdi-star-outline</v-icon>
       </v-btn>
 
-      <v-btn value="사용법" to="/guide">
+      <v-btn value="사용법" to="/guide" aria-label="사용법">
         <span>사용법</span>
         <v-icon>mdi-information-outline</v-icon>
       </v-btn>
