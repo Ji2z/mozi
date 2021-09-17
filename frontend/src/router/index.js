@@ -18,14 +18,14 @@ const routes = [
     path: "/scan",
     component: Scan,
     meta: {
-      title: "스캔모드 - mozi",
+      title: "스캔모드",
     },
   },
   {
     path: "/search",
     component: Search,
     meta: {
-      title: "탐색모드 - mozi",
+      title: "탐색모드",
     },
   },
   {
@@ -36,14 +36,14 @@ const routes = [
         path: "",
         component: FavoritesList,
         meta: {
-          title: "즐겨찾기 목록 - mozi",
+          title: "즐겨찾기",
         },
       },
       {
         path: "add",
         component: FavoritesAdd,
         meta: {
-          title: "즐겨찾기 추가 - mozi",
+          title: "즐겨찾기 추가",
         },
       },
     ],
@@ -52,7 +52,7 @@ const routes = [
     path: "/guide",
     component: Guide,
     meta: {
-      title: "사용법 - mozi",
+      title: "사용법",
     },
   },
 ];

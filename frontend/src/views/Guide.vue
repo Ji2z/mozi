@@ -2,7 +2,7 @@
   <div>
     <v-expansion-panels class="pa-4">
       <v-expansion-panel v-for="(item, i) in guides" :key="i" class="mb-4 info">
-        <v-expansion-panel-header class="item-title">
+        <v-expansion-panel-header class="item-title" :aria-label="item.title">
           {{ item.title }}
         </v-expansion-panel-header>
         <v-expansion-panel-content tabindex="0">
