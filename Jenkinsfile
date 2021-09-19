@@ -30,7 +30,7 @@ pipeline {
 				sh 'docker images -f dangling=true && docker rmi -f $(docker images -f dangling=true -q)' 
 
                 // 컨테이너 실행
-				sh 'docker run -d --name frontend -p 443:443 frontend:latest'
+				sh 'docker run -d --name frontend -p 80:80 frontend:latest'
 				sh 'docker run -d --name backend -p 8080:8080 backend:latest'
 		    }
 	    }
