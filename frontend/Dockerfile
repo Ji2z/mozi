@@ -1,14 +1,18 @@
 # build stage
 FROM node:lts-alpine as build-stage
-WORKDIR /frontend
+WORKDIR /app
 
-COPY . .
+COPY package*.json ./
 RUN npm install
+COPY ./ .
 RUN npm run build
 
 # production stage
 FROM nginx:stable-alpine as production-stage
 
-COPY --from=build-stage /frontend/dist /var/www/mozi 
-EXPOSE 80 443
+RUN mkdir /app
+COPY --from=build-stage /app/dist /app
+COPY nginx.conf /etc/nginx/nginx.conf 
+
+EXPOSE 3000
 CMD ["nginx", "-g", "daemon off;"]
