@@ -12,11 +12,15 @@
     "@tensorflow-models/coco-ssd": "2.2.2",
     "@tensorflow-models/mobilenet": "^2.1.0",
     "@tensorflow/tfjs": "3.3.0",
+<<<<<<< HEAD
     "@tensorflow/tfjs-converter": "^3.9.0",
     "@tensorflow/tfjs-core": "^3.9.0",
     "@tensorflow/tfjs-node": "^3.9.0",
     "axios": "^0.21.4",
     "cordova-plugin-tts": "^0.2.3",
+=======
+    "@tensorflow/tfjs-converter": "^3.1.0",
+>>>>>>> 2bcf8194bd09f32f79028ae397524492561d6537
     "core-js": "^3.6.5",
     "google-tts-api": "^2.0.2",
     "vue": "^2.6.11",

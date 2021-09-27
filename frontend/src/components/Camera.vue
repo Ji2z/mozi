@@ -12,7 +12,7 @@ import { loadGraphModel } from "@tensorflow/tfjs-converter";
 tf.setBackend("webgl");
 
 const MODEL_URL =
-  "https://raw.githubusercontent.com/Ji2z/vuetest/master/model7/model.json";
+  "https://raw.githubusercontent.com/Ji2z/vuetest/master/model8/model.json";
 const threshold = 0.75;
 
 let classesDir = {
