@@ -7,16 +7,33 @@
 </template>
 
 <script>
-require("@tensorflow/tfjs-backend-cpu");
-require("@tensorflow/tfjs-backend-webgl");
-import * as cocoSsd from "@tensorflow-models/coco-ssd";
+import * as tf from "@tensorflow/tfjs";
+import { loadGraphModel } from "@tensorflow/tfjs-converter";
+tf.setBackend("webgl");
+
+const MODEL_URL =
+  "https://raw.githubusercontent.com/Ji2z/vuetest/master/model7/model.json";
+const threshold = 0.75;
+
+let classesDir = {
+  1: {
+    name: "milkis",
+    id: 1,
+  },
+  2: {
+    name: "cider",
+    id: 2,
+  },
+};
 
 export default {
   name: "Camera",
   data() {
     return {
+      // store the promises of initialization
       streamPromise: null,
       modelPromise: null,
+      video: null,
 
       // control the UI visibilities
       isVideoStreamReady: false,
@@ -25,12 +42,12 @@ export default {
 
       // tfjs model related
       model: null,
-      baseModel: "lite_mobilenet_v2",
-      selectableModels: ["lite_mobilenet_v2", "mobilenet_v1", "mobilenet_v2"],
 
       videoRatio: 1,
       resultWidth: 0,
       resultHeight: 0,
+
+      names: ["milkis", "cider"],
     };
   },
   methods: {
@@ -44,23 +61,24 @@ export default {
           })
           .then((stream) => {
             // set <video> source as the webcam input
-            let video = this.$refs.camera;
-            // video.srcObject = stream;
-            // video.play();
+            this.video = this.$refs.camera;
             try {
-              video.srcObject = stream;
+              this.video.srcObject = stream;
             } catch (error) {
               // support older browsers
-              video.src = URL.createObjectURL(stream);
+              this.video.src = URL.createObjectURL(stream);
             }
 
             return new Promise((resolve) => {
               // when video is loaded
-              video.onloadedmetadata = () => {
+              this.video.onloadedmetadata = () => {
                 // calculate the video ratio
-                this.videoRatio = video.offsetHeight / video.offsetWidth;
+                this.videoRatio =
+                  this.video.offsetHeight / this.video.offsetWidth;
                 // add event listener on resize to reset the <video> and <canvas> sizes
-                window.addEventListener("resize", this.setResultSize);
+                //window.addEventListener("resize", this.setResultSize);
+                // set the initial size
+                //this.setResultSize();
 
                 this.isVideoStreamReady = true;
                 console.log("webcam stream initialized");
@@ -76,18 +94,15 @@ export default {
         console.log("failed");
       }
     },
-
-    loadModel() {
+    async loadModel() {
       this.isModelReady = false;
-      // if model already exists => dispose it and load a new one
-      if (this.model) this.model.dispose();
-      // load model with the baseModel
-      return cocoSsd
-        .load(this.baseModel)
+
+      // load the model with loadGraphModel
+      return loadGraphModel(MODEL_URL)
         .then((model) => {
           this.model = model;
           this.isModelReady = true;
-          console.log("model loaded");
+          console.log("model loaded: ", model);
         })
         .catch((error) => {
           console.log("failed to load the model", error);
@@ -95,49 +110,68 @@ export default {
         });
     },
 
-    async detectObjects() {
-      if (!this.isModelReady) return;
-
-      let predictions = await this.model.detect(this.$refs.camera);
-      this.printPredictions(predictions);
-      requestAnimationFrame(() => {
-        this.detectObjects();
+    detectFrame(video, model) {
+      //console.log("detect");
+      tf.engine().startScope();
+      //console.log("detect start");
+      this.model.executeAsync(this.process_input(video)).then((predictions) => {
+        //console.log("render");
+        this.renderPredictions(predictions, video);
+        requestAnimationFrame(() => {
+          this.detectFrame(video, model);
+        });
+        tf.engine().endScope();
       });
     },
-
     loadModelAndStartDetecting() {
       this.modelPromise = this.loadModel();
       // wait for both stream and model promise finished
       // => start detecting objects
-      Promise.all([this.streamPromise, this.modelPromise])
-        .then(() => {
-          this.detectObjects();
+      Promise.all([this.modelPromise, this.streamPromise])
+        .then((values) => {
+          this.detectFrame(this.video, values[0]);
         })
         .catch((error) => {
           console.log("Failed to init stream and/or model");
+          console.log(error);
           this.initFailMessage = error;
         });
     },
-
+    process_input(video_frame) {
+      //console.log("process_input");
+      const tfimg = tf.browser.fromPixels(video_frame).toInt();
+      const expandedimg = tfimg.transpose([0, 1, 2]).expandDims();
+      return expandedimg;
+    },
+    renderPredictions(predictions) {
+      //console.log("render start");
+      const boxes = predictions[1].arraySync();
+      const scores = predictions[4].arraySync();
+      const classes = predictions[2].dataSync();
+      this.buildDetectedObjects(scores, threshold, boxes, classes, classesDir);
+    },
+    buildDetectedObjects(scores, threshold, boxes, classes, classesDir) {
+      scores[0].forEach((score, i) => {
+        // console.log(score);
+        if (score > threshold) {
+          console.log(
+            "------------------" +
+              score.toFixed(4) +
+              ", " +
+              classesDir[classes[i]].name
+          );
+        }
+      });
+    },
     printPredictions(predictions) {
       // get the context of canvas
       predictions.forEach((prediction) => {
+        // if (prediction.class != undefined) {
+        //   console.log(prediction.class);
+        // }
         console.log(prediction.class);
       });
     },
-
-    // init() {
-    //   if ("mediaDevices" in navigator && "getUserMedia" in navigator.mediaDevices) {
-    //     navigator.mediaDevices.getUserMedia({ video: true }).then((stream) => {
-    //       // let videoPlayer = document.querySelector("video");
-    //       const videoPlayer = this.$refs.camera;
-    //       videoPlayer.srcObject = stream;
-    //       videoPlayer.play();
-    //     });
-    //   } else {
-    //     alert("Cannot get Media Devices");
-    //   }
-    // },
     stopCameraStream() {
       let tracks = this.$refs.camera.srcObject.getTracks();
       tracks.forEach((track) => {
