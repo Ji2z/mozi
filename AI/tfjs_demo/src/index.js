@@ -13,21 +13,45 @@ async function load_model() {
     // You can choose whatever IP and PORT you want in the "http://127.0.0.1:8080/model.json" just set it before in your https server
     //const model = await loadGraphModel("http://127.0.0.1:8080/model.json");
   //const model = await loadGraphModel('https://raw.githubusercontent.com/Ji2z/vuetest/master/model2/model.json');
-  model = await loadGraphModel('https://raw.githubusercontent.com/Ji2z/vuetest/master/model7/model.json');
+  model = await loadGraphModel('https://raw.githubusercontent.com/Ji2z/vuetest/master/model8/model.json');
   console.log(model)
     return model;
   }
 
-let classesDir = {
+  let classesDir = {
     1: {
-        name: 'milkis',
-        id: 1,
+      name: "milkis",
+      id: 1,
     },
     2: {
-        name: 'cider',
-        id: 2,
-    }
-}
+      name: "cider",
+      id: 2,
+    },
+    3: {
+      name: "corn_silk_tea",
+      id: 3,
+    },
+    4: {
+      name: "chamisul_fresh",
+      id: 4,
+    },
+    5: {
+      name: "welchs_whitegrape",
+      id: 5,
+    },
+    6: {
+      name: "sprite",
+      id: 6,
+    },
+    7: {
+      name: "welchs_grape",
+      id: 7,
+    },
+    8: {
+      name: "jinro_soju",
+      id: 8,
+    },
+  };
 
 class App extends React.Component {
   videoRef = React.createRef();
@@ -142,9 +166,9 @@ class App extends React.Component {
     ctx.textBaseline = "top";
 
     //Getting predictions
-    const boxes = predictions[1].arraySync();
-    const scores = predictions[4].arraySync();
-    const classes = predictions[2].dataSync();
+    const boxes = predictions[7].arraySync();
+    const scores = predictions[5].arraySync();
+    const classes = predictions[3].dataSync();
     const detections = this.buildDetectedObjects(scores, threshold,
                                     boxes, classes, classesDir);
 

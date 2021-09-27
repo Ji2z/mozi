@@ -1,6 +1,5 @@
 <template>
   <div class="video-container">
-    <!-- <video autoplay ref="camera" /> -->
     <video ref="camera" autoplay></video>
     <canvas ref="canvas" :width="resultWidth" :height="resultHeight"></canvas>
   </div>
@@ -15,6 +14,9 @@ const MODEL_URL =
   "https://raw.githubusercontent.com/Ji2z/vuetest/master/model8/model.json";
 const threshold = 0.75;
 
+let cntMap = new Map();
+let nameSet = new Set();
+
 let classesDir = {
   1: {
     name: "milkis",
@@ -24,23 +26,44 @@ let classesDir = {
     name: "cider",
     id: 2,
   },
+  3: {
+    name: "corn_silk_tea",
+    id: 3,
+  },
+  4: {
+    name: "chamisul_fresh",
+    id: 4,
+  },
+  5: {
+    name: "welchs_whitegrape",
+    id: 5,
+  },
+  6: {
+    name: "sprite",
+    id: 6,
+  },
+  7: {
+    name: "welchs_grape",
+    id: 7,
+  },
+  8: {
+    name: "jinro_soju",
+    id: 8,
+  },
 };
 
 export default {
   name: "Camera",
   data() {
     return {
-      // store the promises of initialization
       streamPromise: null,
       modelPromise: null,
       video: null,
 
-      // control the UI visibilities
       isVideoStreamReady: false,
       isModelReady: false,
       initFailMessage: "",
 
-      // tfjs model related
       model: null,
 
       videoRatio: 1,
@@ -51,35 +74,26 @@ export default {
     };
   },
   methods: {
+    // 웹캠 초기화
     initWebcamStream() {
-      // if the browser supports mediaDevices.getUserMedia API
       if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         return navigator.mediaDevices
           .getUserMedia({
-            audio: false, // don't capture audio
-            video: { facingMode: "environment" }, // use the rear camera if there is
+            audio: false,
+            video: { facingMode: "environment" },
           })
           .then((stream) => {
-            // set <video> source as the webcam input
             this.video = this.$refs.camera;
             try {
               this.video.srcObject = stream;
             } catch (error) {
-              // support older browsers
               this.video.src = URL.createObjectURL(stream);
             }
 
             return new Promise((resolve) => {
-              // when video is loaded
               this.video.onloadedmetadata = () => {
-                // calculate the video ratio
                 this.videoRatio =
                   this.video.offsetHeight / this.video.offsetWidth;
-                // add event listener on resize to reset the <video> and <canvas> sizes
-                //window.addEventListener("resize", this.setResultSize);
-                // set the initial size
-                //this.setResultSize();
-
                 this.isVideoStreamReady = true;
                 console.log("webcam stream initialized");
                 resolve();
@@ -94,10 +108,9 @@ export default {
         console.log("failed");
       }
     },
+    // 인공지능 모델 불러오기
     async loadModel() {
       this.isModelReady = false;
-
-      // load the model with loadGraphModel
       return loadGraphModel(MODEL_URL)
         .then((model) => {
           this.model = model;
@@ -109,13 +122,21 @@ export default {
           throw error;
         });
     },
-
+    // 감지 모델 저장 및 초기화
+    initMap() {
+      console.log("init Map --- ", cntMap);
+      cntMap.forEach(function (item, index) {
+        if (item >= 5) nameSet.add(index);
+      });
+      console.log("nameSet : ", nameSet);
+      cntMap = new Map();
+      nameSet = new Set();
+    },
+    // 모델 실시간 감지
     detectFrame(video, model) {
-      //console.log("detect");
+      console.log("detect");
       tf.engine().startScope();
-      //console.log("detect start");
       this.model.executeAsync(this.process_input(video)).then((predictions) => {
-        //console.log("render");
         this.renderPredictions(predictions, video);
         requestAnimationFrame(() => {
           this.detectFrame(video, model);
@@ -123,13 +144,14 @@ export default {
         tf.engine().endScope();
       });
     },
+    // 모델 로딩 및 감지 시작
     loadModelAndStartDetecting() {
       this.modelPromise = this.loadModel();
-      // wait for both stream and model promise finished
-      // => start detecting objects
       Promise.all([this.modelPromise, this.streamPromise])
         .then((values) => {
           this.detectFrame(this.video, values[0]);
+          // 1초마다 감지 모델 초기화
+          setInterval(this.initMap, 1000);
         })
         .catch((error) => {
           console.log("Failed to init stream and/or model");
@@ -137,41 +159,33 @@ export default {
           this.initFailMessage = error;
         });
     },
+    // 비디오 프레임 확장
     process_input(video_frame) {
-      //console.log("process_input");
       const tfimg = tf.browser.fromPixels(video_frame).toInt();
       const expandedimg = tfimg.transpose([0, 1, 2]).expandDims();
       return expandedimg;
     },
+    // 모델 예측
     renderPredictions(predictions) {
-      //console.log("render start");
-      const boxes = predictions[1].arraySync();
-      const scores = predictions[4].arraySync();
-      const classes = predictions[2].dataSync();
+      const boxes = predictions[7].arraySync();
+      const scores = predictions[5].arraySync();
+      const classes = predictions[3].dataSync();
       this.buildDetectedObjects(scores, threshold, boxes, classes, classesDir);
     },
+    // 모델 예측 결과
     buildDetectedObjects(scores, threshold, boxes, classes, classesDir) {
       scores[0].forEach((score, i) => {
-        // console.log(score);
         if (score > threshold) {
-          console.log(
-            "------------------" +
-              score.toFixed(4) +
-              ", " +
-              classesDir[classes[i]].name
-          );
+          let name = classesDir[classes[i]].name;
+          if (cntMap.has(name)) {
+            cntMap.set(name, cntMap.get(name) + 1);
+          } else cntMap.set(name, 1);
+
+          console.log("------------------" + score.toFixed(4) + ", " + name);
         }
       });
     },
-    printPredictions(predictions) {
-      // get the context of canvas
-      predictions.forEach((prediction) => {
-        // if (prediction.class != undefined) {
-        //   console.log(prediction.class);
-        // }
-        console.log(prediction.class);
-      });
-    },
+    // 페이지 이동 시 카메라 종료
     stopCameraStream() {
       let tracks = this.$refs.camera.srcObject.getTracks();
       tracks.forEach((track) => {
@@ -179,14 +193,10 @@ export default {
       });
     },
   },
-
   mounted() {
     this.streamPromise = this.initWebcamStream();
     this.loadModelAndStartDetecting();
   },
-  // beforeMount() {
-  //   this.init();
-  // },
 };
 </script>
 
