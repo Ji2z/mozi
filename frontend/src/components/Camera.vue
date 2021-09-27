@@ -101,8 +101,10 @@ export default {
   methods: {
     ...mapActions(["getProductDetail"]),
     async openDetailDialog() {
-      await this.getProductDetail(this.product);
-      this.detailDialog = true;
+      if (this.product.name != null) {
+        await this.getProductDetail(this.product);
+        this.detailDialog = true;
+      }
     },
     closeDeleteDialog() {
       this.$set(this.dialog, false);
@@ -163,6 +165,7 @@ export default {
       });
       // console.log("nameSet : ", nameSet);
       if (nameSet.size == 0) {
+        this.product.name = null;
         console.log("감지된 음료가 없습니다.");
       } else if (nameSet.size == 1) {
         nameSet.forEach((item) => {
@@ -177,6 +180,7 @@ export default {
           console.log(this.product);
         });
       } else {
+        this.product.name = null;
         console.log("더 가까이 가주세요.");
       }
       cntMap.clear();
