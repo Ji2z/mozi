@@ -3,18 +3,21 @@
     <Detail v-model="detailDialog" />
     <div justify-center align-center class="scanInfo mx-auto">
       <v-layout justify-center align-center fill-height v-if="product.name">
-        <span
-          ><h2 style="color: #3ff23f">{{ product.name }}&nbsp;</h2></span
-        >
-        <span><h2 style="color: #f5f5f5">입니다.</h2></span>
-        <v-btn
-          icon
-          @click="openDetailDialog()"
-          aria-label="세부 정보 조회 버튼"
-        >
-          <v-icon color="accent">mdi-information</v-icon>
-          <span style="color: #f5f5f5">세부정보 확인하기</span>
-        </v-btn>
+        <div style="text-align: center">
+          <div>
+            <span class="accentInfo">{{ product.name }}</span>
+            &nbsp;
+            <span class="secondaryInfo">입니다.</span>
+          </div>
+          <v-btn
+            icon
+            @click="openDetailDialog()"
+            aria-label="세부 정보 조회 버튼"
+          >
+            <v-icon color="accent">mdi-information</v-icon>
+            <span class="detailInfo"> 세부정보 확인하기</span>
+          </v-btn>
+        </div>
       </v-layout>
       <v-layout justify-center align-center fill-height v-if="!product.name">
         <span
@@ -195,7 +198,7 @@ export default {
           );
           this.product.name = classesDir[item].name;
           this.product.type = classesDir[item].type;
-          console.log(this.product);
+          // console.log(this.product);
         });
       } else {
         this.product.name = null;
@@ -206,7 +209,6 @@ export default {
     },
     // 모델 실시간 감지
     detectFrame(video, model) {
-      console.log("detect");
       tf.engine().startScope();
       this.model.executeAsync(this.process_input(video)).then((predictions) => {
         this.renderPredictions(predictions, video);
@@ -291,12 +293,19 @@ export default {
 }
 
 .accentInfo {
-  color: "#3FF23F" !important;
-  font-size: 150%;
+  color: #3ff23f !important;
+  font-size: 170%;
+  font-weight: bold;
 }
 
 .secondaryInfo {
-  color: "#FAFAFA" !important;
-  font-size: 150%;
+  color: #f5f5f5 !important;
+  font-size: 160%;
+  font-weight: bold;
+}
+
+.detailInfo {
+  color: #f5f5f5 !important;
+  font-size: 110%;
 }
 </style>
