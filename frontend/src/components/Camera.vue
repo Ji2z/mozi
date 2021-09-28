@@ -1,11 +1,38 @@
 <template>
   <div class="video-container">
+    <Detail v-model="detailDialog" />
+    <div justify-center align-center class="scanInfo mx-auto">
+      <v-layout justify-center align-center fill-height v-if="product.name">
+        <div style="text-align: center">
+          <div>
+            <span class="accentInfo">{{ product.name }}</span>
+            &nbsp;
+            <span class="secondaryInfo">입니다.</span>
+          </div>
+          <v-btn
+            icon
+            @click="openDetailDialog()"
+            aria-label="세부 정보 조회 버튼"
+          >
+            <v-icon color="accent">mdi-information</v-icon>
+            <span class="detailInfo"> 세부정보 확인하기</span>
+          </v-btn>
+        </div>
+      </v-layout>
+      <v-layout justify-center align-center fill-height v-if="!product.name">
+        <span
+          ><h2 style="color: #f5f5f5">{{ this.alertText }}</h2></span
+        >
+      </v-layout>
+    </div>
     <video ref="camera" autoplay></video>
     <canvas ref="canvas" :width="resultWidth" :height="resultHeight"></canvas>
   </div>
 </template>
 
 <script>
+import Detail from "./Detail.vue";
+import { mapActions } from "vuex";
 import * as tf from "@tensorflow/tfjs";
 import { loadGraphModel } from "@tensorflow/tfjs-converter";
 tf.setBackend("webgl");
@@ -19,43 +46,57 @@ let nameSet = new Set();
 
 let classesDir = {
   1: {
-    name: "milkis",
+    name: "밀키스",
+    type: "캔",
     id: 1,
   },
   2: {
-    name: "cider",
+    name: "칠성사이다",
+    type: "캔",
     id: 2,
   },
   3: {
-    name: "corn_silk_tea",
+    name: "옥수수수염차",
+    type: "페트병",
     id: 3,
   },
   4: {
-    name: "chamisul_fresh",
+    name: "참이슬",
+    type: "유리병",
     id: 4,
   },
   5: {
-    name: "welchs_whitegrape",
+    name: "웰치스 화이트그레이프",
+    type: "캔",
     id: 5,
   },
   6: {
-    name: "sprite",
+    name: "스프라이트",
+    type: "캔",
     id: 6,
   },
   7: {
-    name: "welchs_grape",
+    name: "웰치스 포도",
+    type: "캔",
     id: 7,
   },
   8: {
-    name: "jinro_soju",
+    name: "진로",
+    type: "유리병",
     id: 8,
   },
 };
 
 export default {
   name: "Camera",
+  components: {
+    Detail,
+  },
   data() {
     return {
+      detailDialog: false,
+      dialog: [],
+
       streamPromise: null,
       modelPromise: null,
       video: null,
@@ -70,10 +111,25 @@ export default {
       resultWidth: 0,
       resultHeight: 0,
 
-      names: ["milkis", "cider"],
+      product: {
+        name: null,
+        type: null,
+      },
+      alertText: "감지된 음료가 없습니다.",
     };
   },
   methods: {
+    ...mapActions(["getProductDetail"]),
+    // 세부정보 모달
+    async openDetailDialog() {
+      if (this.product.name != null) {
+        await this.getProductDetail(this.product);
+        this.detailDialog = true;
+      }
+    },
+    closeDeleteDialog() {
+      this.$set(this.dialog, false);
+    },
     // 웹캠 초기화
     initWebcamStream() {
       if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -124,17 +180,35 @@ export default {
     },
     // 감지 모델 저장 및 초기화
     initMap() {
-      console.log("init Map --- ", cntMap);
+      // console.log("init Map --- ", cntMap);
       cntMap.forEach(function (item, index) {
         if (item >= 5) nameSet.add(index);
       });
-      console.log("nameSet : ", nameSet);
-      cntMap = new Map();
-      nameSet = new Set();
+      // console.log("nameSet : ", nameSet);
+      if (nameSet.size == 0) {
+        this.product.name = null;
+        this.alertText = "감지된 음료가 없습니다.";
+      } else if (nameSet.size == 1) {
+        nameSet.forEach((item) => {
+          console.log(
+            "이름 : ",
+            classesDir[item].name,
+            " , 종류 : ",
+            classesDir[item].type
+          );
+          this.product.name = classesDir[item].name;
+          this.product.type = classesDir[item].type;
+          // console.log(this.product);
+        });
+      } else {
+        this.product.name = null;
+        this.alertText = "더 가까이 가주세요.";
+      }
+      cntMap.clear();
+      nameSet.clear();
     },
     // 모델 실시간 감지
     detectFrame(video, model) {
-      console.log("detect");
       tf.engine().startScope();
       this.model.executeAsync(this.process_input(video)).then((predictions) => {
         this.renderPredictions(predictions, video);
@@ -170,18 +244,17 @@ export default {
       const boxes = predictions[7].arraySync();
       const scores = predictions[5].arraySync();
       const classes = predictions[3].dataSync();
-      this.buildDetectedObjects(scores, threshold, boxes, classes, classesDir);
+      this.buildDetectedObjects(scores, threshold, boxes, classes);
     },
     // 모델 예측 결과
-    buildDetectedObjects(scores, threshold, boxes, classes, classesDir) {
+    buildDetectedObjects(scores, threshold, boxes, classes) {
       scores[0].forEach((score, i) => {
         if (score > threshold) {
-          let name = classesDir[classes[i]].name;
-          if (cntMap.has(name)) {
-            cntMap.set(name, cntMap.get(name) + 1);
-          } else cntMap.set(name, 1);
-
-          console.log("------------------" + score.toFixed(4) + ", " + name);
+          let index = classes[i];
+          if (cntMap.has(index)) {
+            cntMap.set(index, cntMap.get(index) + 1);
+          } else cntMap.set(index, 1);
+          //console.log("------------------" + score.toFixed(4) + ", " + classesDir[classes[i]].name);
         }
       });
     },
@@ -211,5 +284,28 @@ export default {
 .video-container video {
   min-width: 100%;
   min-height: 100%;
+}
+
+.scanInfo {
+  width: 100%;
+  height: 20%;
+  background-color: #212121;
+}
+
+.accentInfo {
+  color: #3ff23f !important;
+  font-size: 170%;
+  font-weight: bold;
+}
+
+.secondaryInfo {
+  color: #f5f5f5 !important;
+  font-size: 160%;
+  font-weight: bold;
+}
+
+.detailInfo {
+  color: #f5f5f5 !important;
+  font-size: 110%;
 }
 </style>
