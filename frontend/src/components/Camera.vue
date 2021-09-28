@@ -1,10 +1,26 @@
 <template>
   <div class="video-container">
     <Detail v-model="detailDialog" />
-    <div class="scanInfo" color="primary" dark flat>
-      <v-btn icon @click="openDetailDialog()" aria-label="세부 정보 조회 버튼">
-        <v-icon>mdi-information</v-icon>
-      </v-btn>
+    <div justify-center align-center class="scanInfo mx-auto">
+      <v-layout justify-center align-center fill-height v-if="product.name">
+        <span
+          ><h2 style="color: #3ff23f">{{ product.name }}&nbsp;</h2></span
+        >
+        <span><h2 style="color: #f5f5f5">입니다.</h2></span>
+        <v-btn
+          icon
+          @click="openDetailDialog()"
+          aria-label="세부 정보 조회 버튼"
+        >
+          <v-icon color="accent">mdi-information</v-icon>
+          <span style="color: #f5f5f5">세부정보 확인하기</span>
+        </v-btn>
+      </v-layout>
+      <v-layout justify-center align-center fill-height v-if="!product.name">
+        <span
+          ><h2 style="color: #f5f5f5">{{ this.alertText }}</h2></span
+        >
+      </v-layout>
     </div>
     <video ref="camera" autoplay></video>
     <canvas ref="canvas" :width="resultWidth" :height="resultHeight"></canvas>
@@ -96,10 +112,12 @@ export default {
         name: null,
         type: null,
       },
+      alertText: "감지된 음료가 없습니다.",
     };
   },
   methods: {
     ...mapActions(["getProductDetail"]),
+    // 세부정보 모달
     async openDetailDialog() {
       if (this.product.name != null) {
         await this.getProductDetail(this.product);
@@ -166,7 +184,7 @@ export default {
       // console.log("nameSet : ", nameSet);
       if (nameSet.size == 0) {
         this.product.name = null;
-        console.log("감지된 음료가 없습니다.");
+        this.alertText = "감지된 음료가 없습니다.";
       } else if (nameSet.size == 1) {
         nameSet.forEach((item) => {
           console.log(
@@ -181,7 +199,7 @@ export default {
         });
       } else {
         this.product.name = null;
-        console.log("더 가까이 가주세요.");
+        this.alertText = "더 가까이 가주세요.";
       }
       cntMap.clear();
       nameSet.clear();
@@ -268,6 +286,17 @@ export default {
 
 .scanInfo {
   width: 100%;
-  height: 25%;
+  height: 20%;
+  background-color: #212121;
+}
+
+.accentInfo {
+  color: "#3FF23F" !important;
+  font-size: 150%;
+}
+
+.secondaryInfo {
+  color: "#FAFAFA" !important;
+  font-size: 150%;
 }
 </style>
