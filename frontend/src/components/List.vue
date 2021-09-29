@@ -28,7 +28,12 @@
               <v-icon>mdi-information</v-icon>
             </v-btn>
 
-            <v-btn icon aria-label="탐색 시작 버튼" v-if="mode == 'search'">
+            <v-btn
+              icon
+              aria-label="탐색 시작 버튼"
+              v-if="mode == 'search'"
+              @click="searchStart(item)"
+            >
               <v-icon>mdi-chevron-right</v-icon>
             </v-btn>
 
@@ -45,7 +50,7 @@
 
               <v-card>
                 <v-card-title class="item-title font-weight-bold" tabindex="0">
-                  {{ item.name }}({{ item.type }}) 삭제
+                  {{ item.name }} ({{ item.type }})
                 </v-card-title>
                 <v-divider class="accent mx-4 v-divider theme--light" />
                 <v-card-text class="pt-5 text-body-1" tabindex="0">
@@ -94,28 +99,17 @@ export default {
     return {
       detailDialog: false,
       dialog: [],
-      favorites: [
-        {
-          name: "갈아만든 배",
-          type: "캔",
-        },
-        {
-          name: "데미소다 오렌지",
-          type: "페트병",
-        },
-        {
-          name: "코카콜라",
-          type: "캔",
-        },
-        {
-          name: "몬스터에너지 울트라",
-          type: "캔",
-        },
-      ],
+      favorites: [],
     };
   },
   methods: {
     ...mapActions(["getProductDetail"]),
+    searchStart(item) {
+      this.$router.push({
+        name: "searchScan",
+        params: { name: item.name, type: item.type },
+      });
+    },
     async openDetailDialog(item) {
       await this.getProductDetail(item);
       this.detailDialog = true;
@@ -124,8 +118,13 @@ export default {
       this.$set(this.dialog, idx, false);
     },
     deleteItem(item, idx) {
+      this.favorites.splice(idx, 1);
+      localStorage.setItem("favorite", JSON.stringify(this.favorites));
       this.$set(this.dialog, idx, false);
     },
+  },
+  created() {
+    this.favorites = JSON.parse(localStorage.getItem("favorite"));
   },
 };
 </script>

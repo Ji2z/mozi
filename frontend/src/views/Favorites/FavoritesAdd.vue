@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Camera ref="camera" />
+    <Camera ref="camera" path="favoriteAdd" />
   </div>
 </template>
 
@@ -16,8 +16,7 @@ export default {
     return {};
   },
   beforeRouteLeave(to, from, next) {
-    this.$refs.video.stopCameraStream();
-    //this.$refs.camera.stopCameraStream();
+    this.$refs.camera.stopCameraStream();
     next();
   },
 };

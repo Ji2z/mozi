@@ -9,7 +9,7 @@
         <v-row class="mb-1">
           <v-col cols="8">
             <div>
-              <v-card-title v-text="item.name" tabindex="0"></v-card-title>
+              <v-card-title v-text="item" tabindex="0"></v-card-title>
             </div>
           </v-col>
           <v-spacer></v-spacer>
@@ -66,25 +66,12 @@ export default {
     return {
       detailDialog: false,
       deleteDialog: false,
-      favorites: [
-        {
-          id: 1,
-          name: "갈아만든 배",
-        },
-        {
-          id: 10,
-          name: "데미소다 오렌지",
-        },
-        {
-          id: 40,
-          name: "코카콜라 제로",
-        },
-      ],
+      favorites: [],
       selected: "",
     };
   },
   created() {
-    // this.favorites = localStorage.getItem("favorites");
+    this.favorites = localStorage.getItem("favorites");
   },
   methods: {
     openDetailDialog(item) {
