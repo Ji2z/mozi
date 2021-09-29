@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Camera ref="camera" />
+    <Camera ref="camera" path="scan" />
   </div>
 </template>
 

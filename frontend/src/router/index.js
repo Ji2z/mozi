@@ -2,6 +2,8 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Scan from "../views/Scan";
 import Search from "../views/Search";
+import SearchList from "../views/Search/SearchList";
+import SearchScan from "../views/Search/SearchScan";
 import Guide from "../views/Guide";
 import Favorites from "../views/Favorites";
 import FavoritesList from "../views/Favorites/FavoritesList";
@@ -24,9 +26,24 @@ const routes = [
   {
     path: "/search",
     component: Search,
-    meta: {
-      title: "탐색모드",
-    },
+    children: [
+      {
+        path: "",
+        component: SearchList,
+        meta: {
+          title: "탐색모드 목록",
+        },
+      },
+      {
+        name: "searchScan",
+        path: "scan",
+        component: SearchScan,
+        meta: {
+          title: "탐색모드",
+        },
+        props: true,
+      },
+    ],
   },
   {
     path: "/favorites",
