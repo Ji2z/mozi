@@ -17,6 +17,7 @@ export const store = new Vuex.Store({
       comparison: "",
     },
     mute: null,
+    isDetect: false,
   },
   getters: {
     getProduct: (state) => {
@@ -24,6 +25,9 @@ export const store = new Vuex.Store({
     },
     getMute: (state) => {
       return state.mute;
+    },
+    getIsDetect: (state) => {
+      return state.isDetect;
     },
   },
   mutations: {
@@ -45,6 +49,9 @@ export const store = new Vuex.Store({
     STORE_MUTE(state, mute) {
       state.mute = mute;
     },
+    STORE_IS_DETECT(state, isDetect) {
+      state.isDetect = isDetect;
+    },
   },
   actions: {
     async getProductDetail({ commit }, product) {
@@ -60,6 +67,9 @@ export const store = new Vuex.Store({
     },
     storeMute({ commit }, mute) {
       commit("STORE_MUTE", mute);
+    },
+    storeIsDetect({ commit }, isDetect) {
+      commit("STORE_IS_DETECT", isDetect);
     },
   },
 });

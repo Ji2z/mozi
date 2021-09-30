@@ -6,6 +6,7 @@
 
 <script>
 import Camera from "../components/Camera";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "Scan",
@@ -15,9 +16,19 @@ export default {
   data() {
     return {};
   },
+  methods: {
+    ...mapActions(["storeIsDetect"]),
+  },
+  computed: {
+    ...mapGetters(["getIsDetect"]),
+  },
   beforeRouteLeave(to, from, next) {
     this.$refs.camera.stopCameraStream();
     next();
+  },
+  created() {
+    console.log("scan : ", this.getIsDetect);
+    this.storeIsDetect(true);
   },
 };
 </script>

@@ -13,7 +13,7 @@
             <span class="accentInfo">
               {{ product.name }} ({{ product.type }})
             </span>
-            <span class="secondaryInfo">입니다.</span>
+            <span class="secondaryInfo"></span>
           </div>
           <div v-if="pathCheck(1)">
             <v-btn
@@ -63,7 +63,7 @@
 
 <script>
 import Detail from "./Detail.vue";
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import * as tf from "@tensorflow/tfjs";
 import { loadGraphModel } from "@tensorflow/tfjs-converter";
 tf.setBackend("webgl");
@@ -147,7 +147,7 @@ let classesDir = {
     id: 14,
   },
   15: {
-    name: "파워에읻,",
+    name: "파워에이드",
     type: "캔",
     id: 15,
   },
@@ -306,8 +306,11 @@ export default {
       searchType: "",
     };
   },
+  computed: {
+    ...mapGetters(["getMute", "getIsDetect"]),
+  },
   methods: {
-    ...mapActions(["getProductDetail"]),
+    ...mapActions(["getProductDetail", "storeIsDetect"]),
     replaceHtml(input) {
       return input.replace("\n", "<br />");
     },
@@ -327,7 +330,6 @@ export default {
       this.$router.go(-1);
     },
     pathCheck(pathNum) {
-      console.log(pathNum);
       if (this.path == "scan" && pathNum == 1) return true;
       else if (this.path == "search" && (pathNum == 1 || pathNum == 3))
         return true;
@@ -379,7 +381,7 @@ export default {
       }
     },
     // 인공지능 모델 불러오기
-    async loadModel() {
+    loadModel() {
       this.isModelReady = false;
       return loadGraphModel(MODEL_URL)
         .then((model) => {
@@ -394,12 +396,11 @@ export default {
     },
     // 감지 모델 저장 및 초기화
     initMap() {
-      // console.log("init Map --- ", cntMap);
       cntMap.forEach(function (item, index) {
-        if (item >= 5) nameSet.add(index);
+        if (item >= 2) nameSet.add(index);
       });
-      // console.log("nameSet : ", nameSet);
       if (nameSet.size == 0) {
+        console.log("nameSet.size - 0");
         this.product.name = null;
         this.alertText = "감지된 음료가 없습니다.";
         this.searchAlertText = "탐색 음료가 존재하지 않습니다.";
@@ -413,13 +414,14 @@ export default {
           );
           this.product.name = classesDir[item].name;
           this.product.type = classesDir[item].type;
-          console.log("search NAme : ", this.searchName);
-          console.log("search type : ", this.searchType);
+          console.log("product : ", this.product);
+          console.log("searchName : ", this.searchName);
+          console.log("searchType : ", this.searchType);
           if (
             this.product.name == this.searchName &&
             this.product.type == this.searchType
           ) {
-            console.log("탐색하는거 찾음");
+            console.log("맞니?");
             if (nameSet.size == 1) this.searchAlertText = "탐색 음료 입니다!";
             else
               this.searchAlertText =
@@ -436,6 +438,7 @@ export default {
     },
     // 모델 실시간 감지
     detectFrame(video, model) {
+      if (this.getIsDetect) return;
       tf.engine().startScope();
       this.model.executeAsync(this.process_input(video)).then((predictions) => {
         this.renderPredictions(predictions, video);
@@ -478,6 +481,7 @@ export default {
       scores[0].forEach((score, i) => {
         if (score > threshold) {
           let index = classes[i];
+          console.log("--------", classesDir[index].name);
           if (cntMap.has(index)) {
             cntMap.set(index, cntMap.get(index) + 1);
           } else cntMap.set(index, 1);
@@ -492,15 +496,19 @@ export default {
       });
     },
   },
-  mounted() {
-    this.streamPromise = this.initWebcamStream();
-    this.loadModelAndStartDetecting();
-  },
-  created() {
+  async created() {
+    await this.storeIsDetect(true);
+    console.log("camera1 : ", this.getIsDetect);
     if (this.path == "search") {
       this.searchName = this.$route.params.name;
       this.searchType = this.$route.params.type;
     }
+    setTimeout(() => {
+      this.storeIsDetect(false);
+      console.log("camera2 : ", this.getIsDetect);
+      this.streamPromise = this.initWebcamStream();
+      this.loadModelAndStartDetecting();
+    }, 1000);
   },
 };
 </script>
