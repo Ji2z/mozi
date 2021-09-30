@@ -490,10 +490,12 @@ export default {
     },
     // 페이지 이동 시 카메라 종료
     stopCameraStream() {
-      let tracks = this.$refs.camera.srcObject.getTracks();
-      tracks.forEach((track) => {
-        track.stop();
-      });
+      if (this.$refs.camera.srcObject) {
+        let tracks = this.$refs.camera.srcObject.getTracks();
+        tracks.forEach((track) => {
+          track.stop();
+        });
+      }
     },
   },
   async created() {
