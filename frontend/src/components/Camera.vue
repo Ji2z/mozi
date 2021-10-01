@@ -1,6 +1,15 @@
 <template>
-  <div class="video-container">
+  <div class="video-container" style="background-color: #212121">
     <Detail v-model="detailDialog" />
+    <div>
+      <v-progress-circular
+        v-if="isLoading"
+        indeterminate
+        class="spinner"
+        :size="100"
+        :width="7"
+      />
+    </div>
     <div justify-center align-center class="scanInfo mx-auto">
       <v-layout
         justify-center
@@ -49,7 +58,7 @@
         justify-center
         align-center
         fill-height
-        v-if="!pathCheck(3) && !product.name"
+        v-if="!pathCheck(3) && !product.name && !isLoading"
       >
         <span
           ><h2 class="alertInfo">{{ this.alertText }}</h2></span
@@ -104,6 +113,8 @@ export default {
       resultWidth: 0,
       resultHeight: 0,
 
+      ttsText: null,
+
       product: {
         name: null,
         type: null,
@@ -114,6 +125,7 @@ export default {
       searchName: "",
       searchType: "",
 
+      isLoading: true,
       count: 0,
     };
   },
@@ -122,6 +134,16 @@ export default {
   },
   methods: {
     ...mapActions(["getProductDetail", "storeIsDetect"]),
+    tts(input) {
+      console.log("mute : ", this.getMute);
+      if ((this.ttsText != null && this.ttsText == input) || !this.getMute)
+        return;
+      this.ttsText = input;
+      let utterance = new SpeechSynthesisUtterance(input);
+      utterance.rate = 1.9;
+      console.log("utterance : ", utterance);
+      window.speechSynthesis.speak(utterance);
+    },
     replaceHtml(input) {
       return input.replace("\n", "<br />");
     },
@@ -218,10 +240,11 @@ export default {
         if (item >= min) nameSet.add(index);
       });
       if (nameSet.size == 0) {
-        console.log("nameSet.size - 0");
         this.product.name = null;
         this.alertText = "감지된 음료가 없습니다.";
         this.searchAlertText = "탐색 음료가 존재하지 않습니다.";
+        if (this.path == "search") this.tts(this.searchAlertText);
+        else this.tts(this.alertText);
       } else {
         nameSet.forEach((item) => {
           console.log(
@@ -239,16 +262,22 @@ export default {
             this.product.name == this.searchName &&
             this.product.type == this.searchType
           ) {
-            console.log("맞니?");
-            if (nameSet.size == 1) this.searchAlertText = "탐색 음료 입니다!";
-            else
+            if (nameSet.size == 1) {
+              this.searchAlertText = "탐색 음료 입니다!";
+              this.tts(this.searchAlertText);
+            } else {
               this.searchAlertText =
                 "탐색 음료가 존재합니다.\n더 가까이 가주세요.";
+              this.tts("탐색 음료가 존재합니다. 더 가까이 가주세요.");
+            }
           }
         });
         if (nameSet.size > 1 && this.path != "search") {
           this.product.name = null;
           this.alertText = "더 가까이 가주세요.";
+          this.tts(this.alertText);
+        } else if (nameSet.size == 1 && this.path != "search") {
+          this.tts(this.product.name + " " + this.product.type);
         }
       }
       cntMap.clear();
@@ -272,6 +301,7 @@ export default {
       this.modelPromise = this.loadModel();
       Promise.all([this.modelPromise, this.streamPromise])
         .then((values) => {
+          this.isLoading = false;
           this.detectFrame(this.video, values[0]);
           // 1초마다 감지 모델 초기화
           setInterval(this.initMap, 1000);
@@ -320,6 +350,7 @@ export default {
   },
   async created() {
     await this.storeIsDetect(true);
+    this.isLoading = true;
     console.log("camera1 : ", this.getIsDetect);
     if (this.path == "search") {
       this.searchName = this.$route.params.name;

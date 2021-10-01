@@ -45,6 +45,13 @@
   font-weight: bold;
 }
 
+.spinner {
+  color: #3ff23f !important;
+  position: absolute;
+  left: 35%;
+  top: 40%;
+}
+
 /* Detail.vue */
 .info-box {
   padding: 24px 0px 0px 0px !important;
