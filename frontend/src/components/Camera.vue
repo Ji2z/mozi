@@ -15,7 +15,7 @@
         justify-center
         align-center
         fill-height
-        v-if="product.name && !pathCheck(3)"
+        v-if="product.name != null && !pathCheck(3)"
       >
         <div style="text-align: center">
           <div>
@@ -58,7 +58,7 @@
         justify-center
         align-center
         fill-height
-        v-if="!pathCheck(3) && !product.name && !isLoading"
+        v-if="!pathCheck(3) && !isLoading"
       >
         <span
           ><h2 class="alertInfo">{{ this.alertText }}</h2></span
@@ -126,6 +126,7 @@ export default {
       searchType: "",
 
       isLoading: true,
+      utterance: null,
       count: 0,
     };
   },
@@ -136,13 +137,20 @@ export default {
     ...mapActions(["getProductDetail", "storeIsDetect"]),
     tts(input) {
       console.log("mute : ", this.getMute);
+      if (this.getIsDetect) window.speechSynthesis.cancel();
       if ((this.ttsText != null && this.ttsText == input) || !this.getMute)
         return;
+      if (
+        this.utterance != null &&
+        this.ttsText != null &&
+        this.ttsText != input
+      )
+        window.speechSynthesis.cancel();
       this.ttsText = input;
-      let utterance = new SpeechSynthesisUtterance(input);
-      utterance.rate = 1.9;
-      console.log("utterance : ", utterance);
-      window.speechSynthesis.speak(utterance);
+      this.utterance = new SpeechSynthesisUtterance(input);
+      this.utterance.rate = 1.9;
+      console.log("utterance : ", this.utterance);
+      window.speechSynthesis.speak(this.utterance);
     },
     replaceHtml(input) {
       return input.replace("\n", "<br />");
@@ -232,11 +240,6 @@ export default {
     initMap() {
       let min = this.count / 2;
       cntMap.forEach(function (item, index) {
-        // if (isMobile) {
-        //   if (item >= 2) nameSet.add(index);
-        // } else {
-        //   if (item >= 5) nameSet.add(index);
-        // }
         if (item >= min) nameSet.add(index);
       });
       if (nameSet.size == 0) {
@@ -286,6 +289,7 @@ export default {
     },
     // 모델 실시간 감지
     detectFrame(video, model) {
+      console.log("detect");
       if (this.getIsDetect) return;
       tf.engine().startScope();
       this.model.executeAsync(this.process_input(video)).then((predictions) => {
