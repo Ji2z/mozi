@@ -47,6 +47,8 @@
         <span>사용법</span>
         <v-icon>mdi-information-outline</v-icon>
       </v-btn>
+
+      <v-btn disabled v-show="false" value="404"></v-btn>
     </v-bottom-navigation>
   </v-app>
 </template>
@@ -59,7 +61,7 @@ export default {
 
   data() {
     return {
-      value: "스캔모드",
+      value: "",
       mute: false,
     };
   },
@@ -73,6 +75,7 @@ export default {
   },
   created() {
     let path = this.$route.path;
+    if (path.includes("404")) this.value = "404";
     if (path.includes("scan")) this.value = "스캔모드";
     if (path.includes("search")) this.value = "탐색모드";
     if (path.includes("favorites")) this.value = "즐겨찾기";
@@ -81,6 +84,7 @@ export default {
 };
 </script>
 
+<style src="@/assets/css/main.css" />
 <style>
 @import url(//fonts.googleapis.com/earlyaccess/jejugothic.css);
 * {

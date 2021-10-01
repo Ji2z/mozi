@@ -57,13 +57,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.info-box {
-  padding: 24px 0px 0px 0px !important;
-}
-.detail {
-  max-height: 350px;
-  overflow: scroll;
-}
-</style>
