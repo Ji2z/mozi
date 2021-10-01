@@ -2,11 +2,11 @@
   <v-app>
     <v-app-bar app color="primary" dark flat>
       <div class="toggle">
-        <v-btn v-if="mute" @click="mute = !mute" aria-label="음성 안내 켜기">
+        <v-btn v-if="!mute" @click="changeMute()" aria-label="음성 안내 켜기">
           <v-icon color="accent">mdi-volume-off</v-icon>
           <span>OFF</span>
         </v-btn>
-        <v-btn v-else @click="mute = !mute" aria-label="음성 안내 끄기">
+        <v-btn v-else @click="changeMute()" aria-label="음성 안내 끄기">
           <v-icon color="accent">mdi-volume-high</v-icon>
           <span>ON</span>
         </v-btn>
@@ -60,14 +60,16 @@ export default {
   data() {
     return {
       value: "스캔모드",
-      mute: false,
+      mute: true,
     };
   },
   methods: {
     ...mapActions(["storeMute"]),
     changeMute() {
+      console.log("changeMute before : ", this.mute);
       if (this.mute) this.mute = false;
       else this.mute = true;
+      console.log("changeMute after : ", this.mute);
       this.storeMute(this.mute);
     },
   },
