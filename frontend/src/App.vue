@@ -84,6 +84,7 @@ export default {
 };
 </script>
 
+<style src="@/assets/css/main.css" />
 <style>
 @import url(//fonts.googleapis.com/earlyaccess/jejugothic.css);
 * {
