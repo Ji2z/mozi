@@ -165,7 +165,16 @@ export default {
         storeMap.push(storeProduct);
       } else {
         storeMap = JSON.parse(localStorage.getItem("favorite"));
-        storeMap.push(storeProduct);
+        if (
+          storeMap.some(
+            (item) =>
+              item.name === storeProduct.name && item.type === storeProduct.type
+          )
+        ) {
+          console.log("중복된 즐겨찾기");
+        } else {
+          storeMap.push(storeProduct);
+        }
       }
       localStorage.setItem("favorite", JSON.stringify(storeMap));
       this.$router.go(-1);
