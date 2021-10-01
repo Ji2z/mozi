@@ -48,7 +48,6 @@ export const store = new Vuex.Store({
     },
     STORE_MUTE(state, mute) {
       state.mute = mute;
-      console.log("storeMute : ", state.mute);
     },
     STORE_IS_DETECT(state, isDetect) {
       state.isDetect = isDetect;
