@@ -71,6 +71,7 @@ tf.setBackend("webgl");
 const MODEL_URL =
   "https://raw.githubusercontent.com/Ji2z/vuetest/master/model9/model.json";
 const threshold = 0.75;
+const isMobile = /Mobi/i.test(window.navigator.userAgent);
 
 let cntMap = new Map();
 let nameSet = new Set();
@@ -348,6 +349,7 @@ export default {
     },
     // 웹캠 초기화
     initWebcamStream() {
+      console.log(isMobile ? "Mobile" : "PC");
       if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         return navigator.mediaDevices
           .getUserMedia({
@@ -397,7 +399,11 @@ export default {
     // 감지 모델 저장 및 초기화
     initMap() {
       cntMap.forEach(function (item, index) {
-        if (item >= 2) nameSet.add(index);
+        if (isMobile) {
+          if (item >= 2) nameSet.add(index);
+        } else {
+          if (item >= 5) nameSet.add(index);
+        }
       });
       if (nameSet.size == 0) {
         console.log("nameSet.size - 0");
