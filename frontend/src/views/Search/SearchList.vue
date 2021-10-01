@@ -15,11 +15,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-.searchTitle {
-  font-size: 200%;
-  font-weight: bold;
-  text-align: center;
-}
-</style>

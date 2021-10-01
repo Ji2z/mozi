@@ -8,6 +8,7 @@ import Guide from "../views/Guide";
 import Favorites from "../views/Favorites";
 import FavoritesList from "../views/Favorites/FavoritesList";
 import FavoritesAdd from "../views/Favorites/FavoritesAdd";
+import PageNotFound from "../views/Error/PageNotFound";
 
 Vue.use(VueRouter);
 
@@ -70,6 +71,17 @@ const routes = [
     component: Guide,
     meta: {
       title: "사용법",
+    },
+  },
+  {
+    path: "*",
+    redirect: "/404",
+  },
+  {
+    path: "/404",
+    component: PageNotFound,
+    meta: {
+      title: "페이지를 찾을 수 없습니다.",
     },
   },
 ];
