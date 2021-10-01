@@ -305,6 +305,8 @@ export default {
 
       searchName: "",
       searchType: "",
+
+      count: 0,
     };
   },
   computed: {
@@ -398,12 +400,14 @@ export default {
     },
     // 감지 모델 저장 및 초기화
     initMap() {
+      let min = this.count / 2;
       cntMap.forEach(function (item, index) {
-        if (isMobile) {
-          if (item >= 2) nameSet.add(index);
-        } else {
-          if (item >= 5) nameSet.add(index);
-        }
+        // if (isMobile) {
+        //   if (item >= 2) nameSet.add(index);
+        // } else {
+        //   if (item >= 5) nameSet.add(index);
+        // }
+        if (item >= min) nameSet.add(index);
       });
       if (nameSet.size == 0) {
         console.log("nameSet.size - 0");
@@ -441,6 +445,7 @@ export default {
       }
       cntMap.clear();
       nameSet.clear();
+      this.count = 0;
     },
     // 모델 실시간 감지
     detectFrame(video, model) {
@@ -486,6 +491,7 @@ export default {
     buildDetectedObjects(scores, threshold, boxes, classes) {
       scores[0].forEach((score, i) => {
         if (score > threshold) {
+          this.count++;
           let index = classes[i];
           console.log("--------", classesDir[index].name);
           if (cntMap.has(index)) {
