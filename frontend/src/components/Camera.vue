@@ -3,14 +3,14 @@
     <Detail v-model="detailDialog" />
     <div>
       <v-progress-circular
-        v-if="isLoading"
         indeterminate
+        v-if="isLoading"
         class="spinner"
         :size="100"
         :width="7"
       />
     </div>
-    <div justify-center align-center class="scanInfo mx-auto">
+    <div justify-center align-center class="scanInfo mx-auto" v-if="!isLoading">
       <v-layout
         justify-center
         align-center
@@ -137,7 +137,7 @@ export default {
     ...mapActions(["getProductDetail", "storeIsDetect"]),
     tts(input) {
       console.log("mute : ", this.getMute);
-      if (this.getIsDetect) window.speechSynthesis.cancel();
+      // if (this.getIsDetect) window.speechSynthesis.cancel();
       if ((this.ttsText != null && this.ttsText == input) || !this.getMute)
         return;
       if (
@@ -238,6 +238,9 @@ export default {
     },
     // 감지 모델 저장 및 초기화
     initMap() {
+      console.log("-----isDetect : ", this.getIsDetect);
+      if (this.getIsDetect) return;
+      console.log("------------------path : ", this.path);
       let min = this.count / 2;
       cntMap.forEach(function (item, index) {
         if (item >= min) nameSet.add(index);
