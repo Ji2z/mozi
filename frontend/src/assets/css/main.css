@@ -67,3 +67,9 @@
   font-weight: bold;
   text-align: center;
 }
+
+.imgDiv {
+  text-align: center;
+  font-size: 25px;
+  margin-top: 20%;
+}
