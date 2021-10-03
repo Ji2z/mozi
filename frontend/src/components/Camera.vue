@@ -248,11 +248,6 @@ export default {
     // 감지 모델 저장 및 초기화
     initMap() {
       console.log("-----isDetect : ", this.getIsDetect);
-      if (this.getIsDetect) {
-        this.stopTimer();
-        console.log("initMap에서 모델 종료");
-        return;
-      }
       console.log("------------------path : ", this.path);
       let min = this.count / 2;
       cntMap.forEach(function (item, index) {
@@ -307,11 +302,6 @@ export default {
     detectFrame(video, model) {
       console.log("detect");
       if (this.getIsDetect) {
-        this.startTimer();
-        if (this.getIsDetect) {
-          console.log("detectFrame에서 stopTimer");
-          this.stopTimer();
-        }
         console.log("detect에서 모델 종료");
         return;
       }
@@ -331,9 +321,6 @@ export default {
         .then((values) => {
           this.isLoading = false;
 
-          if (this.getIsDetect) {
-            console.log("loadModelAndStart에서 모델 종료");
-          }
           this.detectFrame(this.video, values[0]);
           this.startTimer();
         })
@@ -381,10 +368,6 @@ export default {
     startTimer() {
       console.log("시작");
       this.timer = setInterval(this.initMap, 1000);
-    },
-    stopTimer() {
-      console.log("중지");
-      clearInterval(this.timer);
     },
   },
   async created() {
