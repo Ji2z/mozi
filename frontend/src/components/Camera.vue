@@ -3,14 +3,14 @@
     <Detail v-model="detailDialog" />
     <div>
       <v-progress-circular
-        v-if="isLoading"
         indeterminate
+        v-if="isLoading"
         class="spinner"
         :size="100"
         :width="7"
       />
     </div>
-    <div justify-center align-center class="scanInfo mx-auto">
+    <div justify-center align-center class="scanInfo mx-auto" v-if="!isLoading">
       <v-layout
         justify-center
         align-center
@@ -108,7 +108,7 @@ export default {
       initFailMessage: "",
 
       model: null,
-
+      timer: null,
       videoRatio: 1,
       resultWidth: 0,
       resultHeight: 0,
@@ -137,7 +137,7 @@ export default {
     ...mapActions(["getProductDetail", "storeIsDetect"]),
     tts(input) {
       console.log("mute : ", this.getMute);
-      if (this.getIsDetect) window.speechSynthesis.cancel();
+      // if (this.getIsDetect) window.speechSynthesis.cancel();
       if ((this.ttsText != null && this.ttsText == input) || !this.getMute)
         return;
       if (
@@ -247,6 +247,8 @@ export default {
     },
     // 감지 모델 저장 및 초기화
     initMap() {
+      console.log("-----isDetect : ", this.getIsDetect);
+      console.log("------------------path : ", this.path);
       let min = this.count / 2;
       cntMap.forEach(function (item, index) {
         if (item >= min) nameSet.add(index);
@@ -299,7 +301,10 @@ export default {
     // 모델 실시간 감지
     detectFrame(video, model) {
       console.log("detect");
-      if (this.getIsDetect) return;
+      if (this.getIsDetect) {
+        console.log("detect에서 모델 종료");
+        return;
+      }
       tf.engine().startScope();
       this.model.executeAsync(this.process_input(video)).then((predictions) => {
         this.renderPredictions(predictions, video);
@@ -315,9 +320,9 @@ export default {
       Promise.all([this.modelPromise, this.streamPromise])
         .then((values) => {
           this.isLoading = false;
+
           this.detectFrame(this.video, values[0]);
-          // 1초마다 감지 모델 초기화
-          setInterval(this.initMap, 1000);
+          this.startTimer();
         })
         .catch((error) => {
           console.log("Failed to init stream and/or model");
@@ -360,6 +365,10 @@ export default {
         });
       }
     },
+    startTimer() {
+      console.log("시작");
+      this.timer = setInterval(this.initMap, 1000);
+    },
   },
   async created() {
     await this.storeIsDetect(true);
@@ -375,6 +384,9 @@ export default {
       this.streamPromise = this.initWebcamStream();
       this.loadModelAndStartDetecting();
     }, 1000);
+  },
+  destroyed() {
+    clearInterval(this.timer);
   },
 };
 </script>
