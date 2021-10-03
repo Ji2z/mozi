@@ -108,7 +108,7 @@ export default {
       initFailMessage: "",
 
       model: null,
-
+      timer: null,
       videoRatio: 1,
       resultWidth: 0,
       resultHeight: 0,
@@ -248,7 +248,11 @@ export default {
     // 감지 모델 저장 및 초기화
     initMap() {
       console.log("-----isDetect : ", this.getIsDetect);
-      if (this.getIsDetect) return;
+      if (this.getIsDetect) {
+        this.stopTimer();
+        console.log("initMap에서 모델 종료");
+        return;
+      }
       console.log("------------------path : ", this.path);
       let min = this.count / 2;
       cntMap.forEach(function (item, index) {
@@ -302,7 +306,15 @@ export default {
     // 모델 실시간 감지
     detectFrame(video, model) {
       console.log("detect");
-      if (this.getIsDetect) return;
+      if (this.getIsDetect) {
+        this.startTimer();
+        if (this.getIsDetect) {
+          console.log("detectFrame에서 stopTimer");
+          this.stopTimer();
+        }
+        console.log("detect에서 모델 종료");
+        return;
+      }
       tf.engine().startScope();
       this.model.executeAsync(this.process_input(video)).then((predictions) => {
         this.renderPredictions(predictions, video);
@@ -318,9 +330,12 @@ export default {
       Promise.all([this.modelPromise, this.streamPromise])
         .then((values) => {
           this.isLoading = false;
+
+          if (this.getIsDetect) {
+            console.log("loadModelAndStart에서 모델 종료");
+          }
           this.detectFrame(this.video, values[0]);
-          // 1초마다 감지 모델 초기화
-          setInterval(this.initMap, 1000);
+          this.startTimer();
         })
         .catch((error) => {
           console.log("Failed to init stream and/or model");
@@ -363,6 +378,14 @@ export default {
         });
       }
     },
+    startTimer() {
+      console.log("시작");
+      this.timer = setInterval(this.initMap, 1000);
+    },
+    stopTimer() {
+      console.log("중지");
+      clearInterval(this.timer);
+    },
   },
   async created() {
     await this.storeIsDetect(true);
@@ -378,6 +401,9 @@ export default {
       this.streamPromise = this.initWebcamStream();
       this.loadModelAndStartDetecting();
     }, 1000);
+  },
+  destroyed() {
+    clearInterval(this.timer);
   },
 };
 </script>
