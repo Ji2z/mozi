@@ -11,4 +11,8 @@ new Vue({
   vuetify,
   store,
   render: (h) => h(App),
+  created() {
+    const html = document.documentElement;
+    html.setAttribute("lang", "ko");
+  },
 }).$mount("#app");
