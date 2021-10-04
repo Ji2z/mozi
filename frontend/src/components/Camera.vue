@@ -137,6 +137,10 @@ export default {
     ...mapActions(["getProductDetail", "storeIsDetect"]),
     tts(input) {
       console.log("mute : ", this.getMute);
+      const isiOS =
+        navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
+      console.log("isiOS : ", isiOS);
+      console.log("navigator.platform : ", navigator.platform);
       // if (this.getIsDetect) window.speechSynthesis.cancel();
       if ((this.ttsText != null && this.ttsText == input) || !this.getMute)
         return;
