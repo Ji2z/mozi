@@ -157,14 +157,15 @@ export default {
       document.addEventListener("click", simulateSpeech);
       this.isIOS = true;
     },
-    tts(input) {
+    async tts(input) {
       console.log("mute : ", this.getMute);
       const isiOS =
         navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
       console.log("isiOS : ", isiOS);
+      console.log("this.isIOS : ", this.isIOS);
       console.log("navigator.platform : ", navigator.platform);
       if (isiOS && !this.isIOS) {
-        this.iOSTTS(input);
+        await this.iOSTTS(input);
       }
       if ((this.ttsText != null && this.ttsText == input) || !this.getMute)
         return;
