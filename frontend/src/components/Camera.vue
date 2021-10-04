@@ -128,6 +128,8 @@ export default {
       isLoading: true,
       utterance: null,
       count: 0,
+
+      isIOS: false,
     };
   },
   computed: {
@@ -153,6 +155,7 @@ export default {
       };
 
       document.addEventListener("click", simulateSpeech);
+      this.isIOS = true;
     },
     tts(input) {
       console.log("mute : ", this.getMute);
@@ -160,23 +163,22 @@ export default {
         navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
       console.log("isiOS : ", isiOS);
       console.log("navigator.platform : ", navigator.platform);
-      if (isiOS) {
+      if (isiOS && this.isIOS) {
         this.iOSTTS(input);
-      } else {
-        if ((this.ttsText != null && this.ttsText == input) || !this.getMute)
-          return;
-        if (
-          this.utterance != null &&
-          this.ttsText != null &&
-          this.ttsText != input
-        )
-          window.speechSynthesis.cancel();
-        this.ttsText = input;
-        this.utterance = new SpeechSynthesisUtterance(input);
-        this.utterance.rate = 1.9;
-        console.log("utterance : ", this.utterance.text);
-        window.speechSynthesis.speak(this.utterance);
       }
+      if ((this.ttsText != null && this.ttsText == input) || !this.getMute)
+        return;
+      if (
+        this.utterance != null &&
+        this.ttsText != null &&
+        this.ttsText != input
+      )
+        window.speechSynthesis.cancel();
+      this.ttsText = input;
+      this.utterance = new SpeechSynthesisUtterance(input);
+      this.utterance.rate = 1.9;
+      console.log("utterance : ", this.utterance.text);
+      window.speechSynthesis.speak(this.utterance);
     },
     replaceHtml(input) {
       return input.replace("\n", "<br />");
@@ -402,6 +404,7 @@ export default {
   async created() {
     await this.storeIsDetect(true);
     this.isLoading = true;
+    this.isIOS = false;
     console.log("camera1 : ", this.getIsDetect);
     if (this.path == "search") {
       this.searchName = this.$route.params.name;
