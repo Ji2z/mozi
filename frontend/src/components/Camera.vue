@@ -338,9 +338,12 @@ export default {
     },
     // 모델 예측
     renderPredictions(predictions) {
+      const classes = [];
+      predictions[2].dataSync().forEach((element) => {
+        classes.push(Math.round(element));
+      });
       const boxes = predictions[4].arraySync();
       const scores = predictions[1].arraySync();
-      const classes = predictions[2].dataSync();
       this.buildDetectedObjects(scores, threshold, boxes, classes);
     },
     // 모델 예측 결과
