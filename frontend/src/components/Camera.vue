@@ -48,10 +48,10 @@
       </v-layout>
       <v-layout justify-center align-center fill-height v-if="pathCheck(3)">
         <span>
-          <h2 class="alertInfo">
+          <div class="alertInfo">
             <div class="searchInfo">{{ searchName }} ({{ searchType }})</div>
             <div v-html="replaceHtml(searchAlertText)"></div>
-          </h2>
+          </div>
         </span>
       </v-layout>
       <v-layout
@@ -61,11 +61,11 @@
         v-if="!pathCheck(3) && !isLoading"
       >
         <span
-          ><h2 class="alertInfo">{{ this.alertText }}</h2></span
+          ><div class="alertInfo">{{ this.alertText }}</div></span
         >
       </v-layout>
     </div>
-    <video ref="camera" autoplay></video>
+    <video ref="camera" autoplay playisline></video>
     <canvas ref="canvas" :width="resultWidth" :height="resultHeight"></canvas>
   </div>
 </template>
@@ -342,9 +342,12 @@ export default {
     },
     // 모델 예측
     renderPredictions(predictions) {
+      const classes = [];
+      predictions[2].dataSync().forEach((element) => {
+        classes.push(Math.round(element));
+      });
       const boxes = predictions[4].arraySync();
       const scores = predictions[1].arraySync();
-      const classes = predictions[2].dataSync();
       this.buildDetectedObjects(scores, threshold, boxes, classes);
     },
     // 모델 예측 결과
