@@ -48,10 +48,10 @@
       </v-layout>
       <v-layout justify-center align-center fill-height v-if="pathCheck(3)">
         <span>
-          <h2 class="alertInfo">
+          <div class="alertInfo">
             <div class="searchInfo">{{ searchName }} ({{ searchType }})</div>
             <div v-html="replaceHtml(searchAlertText)"></div>
-          </h2>
+          </div>
         </span>
       </v-layout>
       <v-layout
@@ -61,7 +61,7 @@
         v-if="!pathCheck(3) && !isLoading"
       >
         <span
-          ><h2 class="alertInfo">{{ this.alertText }}</h2></span
+          ><div class="alertInfo">{{ this.alertText }}</div></span
         >
       </v-layout>
     </div>
