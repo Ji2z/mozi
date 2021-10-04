@@ -135,6 +135,25 @@ export default {
   },
   methods: {
     ...mapActions(["getProductDetail", "storeIsDetect"]),
+    iOSTTS(input) {
+      console.log("iOSTTS다~!~!");
+      if (typeof window === "undefined") {
+        return;
+      }
+      const isiOS =
+        navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
+      if (!isiOS) {
+        return;
+      }
+      const simulateSpeech = () => {
+        const lecture = new SpeechSynthesisUtterance(input);
+        lecture.volume = 0;
+        speechSynthesis.speak(lecture);
+        document.removeEventListener("click", simulateSpeech);
+      };
+
+      document.addEventListener("click", simulateSpeech);
+    },
     tts(input) {
       console.log("mute : ", this.getMute);
       const isiOS =
@@ -142,10 +161,7 @@ export default {
       console.log("isiOS : ", isiOS);
       console.log("navigator.platform : ", navigator.platform);
       if (isiOS) {
-        let lecture = new SpeechSynthesisUtterance(input);
-        console.log("lecture : ", lecture.text);
-        lecture.volume = 0;
-        speechSynthesis.speak(lecture);
+        this.iOSTTS(input);
       } else {
         if ((this.ttsText != null && this.ttsText == input) || !this.getMute)
           return;
