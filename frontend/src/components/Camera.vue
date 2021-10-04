@@ -163,7 +163,7 @@ export default {
         navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
       console.log("isiOS : ", isiOS);
       console.log("navigator.platform : ", navigator.platform);
-      if (isiOS && this.isIOS) {
+      if (isiOS && !this.isIOS) {
         this.iOSTTS(input);
       }
       if ((this.ttsText != null && this.ttsText == input) || !this.getMute)
