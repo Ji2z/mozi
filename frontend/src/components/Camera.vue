@@ -65,7 +65,7 @@
         >
       </v-layout>
     </div>
-    <video ref="camera" autoplay></video>
+    <video ref="camera" autoplay playisline></video>
     <canvas ref="canvas" :width="resultWidth" :height="resultHeight"></canvas>
   </div>
 </template>
