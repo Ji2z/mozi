@@ -11,7 +11,7 @@
       </v-btn>
     </v-col>
     <Detail v-model="detailDialog" />
-    <div v-if="favorites.length == 0" class="imgDiv">
+    <div v-if="favorites == null || favorites.length == 0" class="imgDiv">
       <img src="@/assets/box.png" alt="" height="150px" width="150px" /> <br />
       즐겨찾기를 추가해주세요!
     </div>
