@@ -141,19 +141,26 @@ export default {
         navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
       console.log("isiOS : ", isiOS);
       console.log("navigator.platform : ", navigator.platform);
-      if ((this.ttsText != null && this.ttsText == input) || !this.getMute)
-        return;
-      if (
-        this.utterance != null &&
-        this.ttsText != null &&
-        this.ttsText != input
-      )
-        window.speechSynthesis.cancel();
-      this.ttsText = input;
-      this.utterance = new SpeechSynthesisUtterance(input);
-      this.utterance.rate = 1.9;
-      console.log("utterance : ", this.utterance);
-      window.speechSynthesis.speak(this.utterance);
+      if (isiOS) {
+        let lecture = new SpeechSynthesisUtterance(input);
+        console.log("lecture : ", lecture.text);
+        lecture.volume = 0;
+        speechSynthesis.speak(lecture);
+      } else {
+        if ((this.ttsText != null && this.ttsText == input) || !this.getMute)
+          return;
+        if (
+          this.utterance != null &&
+          this.ttsText != null &&
+          this.ttsText != input
+        )
+          window.speechSynthesis.cancel();
+        this.ttsText = input;
+        this.utterance = new SpeechSynthesisUtterance(input);
+        this.utterance.rate = 1.9;
+        console.log("utterance : ", this.utterance.text);
+        window.speechSynthesis.speak(this.utterance);
+      }
     },
     replaceHtml(input) {
       return input.replace("\n", "<br />");
