@@ -177,7 +177,7 @@ export default {
         window.speechSynthesis.cancel();
       this.ttsText = input;
       this.utterance = new SpeechSynthesisUtterance(input);
-      this.utterance.rate = 1.9;
+      if (!isiOS) this.utterance.rate = 1.9;
       console.log("utterance : ", this.utterance.text);
       window.speechSynthesis.speak(this.utterance);
     },
