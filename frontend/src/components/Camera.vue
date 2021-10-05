@@ -79,7 +79,7 @@ tf.setBackend("webgl");
 import classesDir from "@/assets/js/drink.js";
 
 const MODEL_URL =
-  "https://raw.githubusercontent.com/Ji2z/vuetest/master/model9/model.json";
+  "https://raw.githubusercontent.com/Ji2z/vuetest/master/model10/model.json";
 const threshold = 0.75;
 const isMobile = /Mobi/i.test(window.navigator.userAgent);
 
@@ -368,11 +368,11 @@ export default {
     // 모델 예측
     renderPredictions(predictions) {
       const classes = [];
-      predictions[2].dataSync().forEach((element) => {
+      predictions[4].dataSync().forEach((element) => {
         classes.push(Math.round(element));
       });
-      const boxes = predictions[4].arraySync();
-      const scores = predictions[1].arraySync();
+      const boxes = predictions[0].arraySync();
+      const scores = predictions[2].arraySync();
       this.buildDetectedObjects(scores, threshold, boxes, classes);
     },
     // 모델 예측 결과
