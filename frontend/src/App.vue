@@ -23,7 +23,7 @@
     <v-bottom-navigation
       app
       v-model="value"
-      class="primary navi"
+      class="primary"
       active-class="accent primary--text font-weight-bold"
       grow
       dark
@@ -38,12 +38,10 @@
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
 
-      <div class="navi">
-        <v-btn value="즐겨찾기" to="/favorites" aria-label="즐겨찾기">
-          <span>즐겨찾기</span>
-          <v-icon>mdi-star-outline</v-icon>
-        </v-btn>
-      </div>
+      <v-btn value="즐겨찾기" to="/favorites" aria-label="즐겨찾기">
+        <span>즐겨찾기</span>
+        <v-icon>mdi-star-outline</v-icon>
+      </v-btn>
 
       <v-btn value="사용법" to="/guide" aria-label="사용법">
         <span>사용법</span>
