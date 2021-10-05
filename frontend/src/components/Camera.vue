@@ -58,7 +58,7 @@
         justify-center
         align-center
         fill-height
-        v-if="!pathCheck(3) && !isLoading"
+        v-if="!pathCheck(3) && !isLoading && product.name == null"
       >
         <span
           ><div class="alertInfo">{{ this.alertText }}</div></span
@@ -210,8 +210,7 @@ export default {
     },
     pathCheck(pathNum) {
       if (this.path == "scan" && pathNum == 1) return true;
-      else if (this.path == "search" && (pathNum == 1 || pathNum == 3))
-        return true;
+      else if (this.path == "search" && pathNum == 3) return true;
       else if (this.path == "favoriteAdd" && pathNum == 2) return true;
       return false;
     },
