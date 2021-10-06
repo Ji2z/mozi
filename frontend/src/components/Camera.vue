@@ -407,6 +407,9 @@ export default {
     this.isIOS = false;
     console.log("camera1 : ", this.getIsDetect);
     if (this.path == "search") {
+      if (this.$route.params.name == null) {
+        this.$router.push("/search");
+      }
       this.searchName = this.$route.params.name;
       this.searchType = this.$route.params.type;
     }
