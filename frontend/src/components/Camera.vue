@@ -58,14 +58,14 @@
         justify-center
         align-center
         fill-height
-        v-if="!pathCheck(3) && !isLoading"
+        v-if="!pathCheck(3) && !isLoading && product.name == null"
       >
         <span
           ><div class="alertInfo">{{ this.alertText }}</div></span
         >
       </v-layout>
     </div>
-    <video ref="camera" autoplay playisline></video>
+    <video ref="camera" muted="muted" autoplay playisline></video>
     <canvas ref="canvas" :width="resultWidth" :height="resultHeight"></canvas>
   </div>
 </template>
@@ -79,7 +79,7 @@ tf.setBackend("webgl");
 import classesDir from "@/assets/js/drink.js";
 
 const MODEL_URL =
-  "https://raw.githubusercontent.com/Ji2z/vuetest/master/model9/model.json";
+  "https://raw.githubusercontent.com/Ji2z/vuetest/master/model10/model.json";
 const threshold = 0.75;
 const isMobile = /Mobi/i.test(window.navigator.userAgent);
 
@@ -128,6 +128,8 @@ export default {
       isLoading: true,
       utterance: null,
       count: 0,
+
+      isIOS: false,
     };
   },
   computed: {
@@ -135,9 +137,36 @@ export default {
   },
   methods: {
     ...mapActions(["getProductDetail", "storeIsDetect"]),
-    tts(input) {
+    iOSTTS(input) {
+      console.log("iOSTTS다~!~!");
+      if (typeof window === "undefined") {
+        return;
+      }
+      const isiOS =
+        navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
+      if (!isiOS) {
+        return;
+      }
+      const simulateSpeech = () => {
+        const lecture = new SpeechSynthesisUtterance(input);
+        lecture.volume = 0;
+        speechSynthesis.speak(lecture);
+        document.removeEventListener("click", simulateSpeech);
+      };
+
+      document.addEventListener("click", simulateSpeech);
+      this.isIOS = true;
+    },
+    async tts(input) {
       console.log("mute : ", this.getMute);
-      // if (this.getIsDetect) window.speechSynthesis.cancel();
+      const isiOS =
+        navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
+      console.log("isiOS : ", isiOS);
+      console.log("this.isIOS : ", this.isIOS);
+      console.log("navigator.platform : ", navigator.platform);
+      if (isiOS && !this.isIOS) {
+        await this.iOSTTS(input);
+      }
       if ((this.ttsText != null && this.ttsText == input) || !this.getMute)
         return;
       if (
@@ -148,8 +177,8 @@ export default {
         window.speechSynthesis.cancel();
       this.ttsText = input;
       this.utterance = new SpeechSynthesisUtterance(input);
-      this.utterance.rate = 1.9;
-      console.log("utterance : ", this.utterance);
+      if (!isiOS) this.utterance.rate = 1.9;
+      console.log("utterance : ", this.utterance.text);
       window.speechSynthesis.speak(this.utterance);
     },
     replaceHtml(input) {
@@ -181,8 +210,7 @@ export default {
     },
     pathCheck(pathNum) {
       if (this.path == "scan" && pathNum == 1) return true;
-      else if (this.path == "search" && (pathNum == 1 || pathNum == 3))
-        return true;
+      else if (this.path == "search" && pathNum == 3) return true;
       else if (this.path == "favoriteAdd" && pathNum == 2) return true;
       return false;
     },
@@ -339,11 +367,11 @@ export default {
     // 모델 예측
     renderPredictions(predictions) {
       const classes = [];
-      predictions[2].dataSync().forEach((element) => {
+      predictions[4].dataSync().forEach((element) => {
         classes.push(Math.round(element));
       });
-      const boxes = predictions[4].arraySync();
-      const scores = predictions[1].arraySync();
+      const boxes = predictions[0].arraySync();
+      const scores = predictions[2].arraySync();
       this.buildDetectedObjects(scores, threshold, boxes, classes);
     },
     // 모델 예측 결과
@@ -376,6 +404,7 @@ export default {
   async created() {
     await this.storeIsDetect(true);
     this.isLoading = true;
+    this.isIOS = false;
     console.log("camera1 : ", this.getIsDetect);
     if (this.path == "search") {
       this.searchName = this.$route.params.name;
