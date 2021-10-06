@@ -27,7 +27,6 @@ export default {
     next();
   },
   created() {
-    console.log("scan : ", this.getIsDetect);
     this.storeIsDetect(true);
   },
 };

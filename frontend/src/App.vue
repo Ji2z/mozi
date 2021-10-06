@@ -73,10 +73,8 @@ export default {
   methods: {
     ...mapActions(["storeMute"]),
     changeMute() {
-      console.log("changeMute before : ", this.mute);
       if (this.mute) this.mute = false;
       else this.mute = true;
-      console.log("changeMute after : ", this.mute);
       this.storeMute(this.mute);
     },
   },

@@ -73,7 +73,6 @@ import classesDir from "@/assets/js/drink.js";
 const MODEL_URL =
   "https://raw.githubusercontent.com/Ji2z/vuetest/master/model10/model.json";
 const threshold = 0.75;
-const isMobile = /Mobi/i.test(window.navigator.userAgent);
 
 let cntMap = new Map();
 let nameSet = new Set();
@@ -130,7 +129,6 @@ export default {
   methods: {
     ...mapActions(["getProductDetail", "storeIsDetect"]),
     iOSTTS(input) {
-      console.log("iOSTTS다~!~!");
       if (typeof window === "undefined") {
         return;
       }
@@ -150,12 +148,8 @@ export default {
       this.isIOS = true;
     },
     async tts(input) {
-      console.log("mute : ", this.getMute);
       const isiOS =
         navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
-      console.log("isiOS : ", isiOS);
-      console.log("this.isIOS : ", this.isIOS);
-      console.log("navigator.platform : ", navigator.platform);
       if (isiOS && !this.isIOS) {
         await this.iOSTTS(input);
       }
@@ -170,7 +164,6 @@ export default {
       this.ttsText = input;
       this.utterance = new SpeechSynthesisUtterance(input);
       if (!isiOS) this.utterance.rate = 1.9;
-      console.log("utterance : ", this.utterance.text);
       window.speechSynthesis.speak(this.utterance);
     },
     replaceHtml(input) {
@@ -187,13 +180,11 @@ export default {
       } else {
         storeMap = JSON.parse(localStorage.getItem("favorite"));
         if (
-          storeMap.some(
+          !storeMap.some(
             (item) =>
               item.name === storeProduct.name && item.type === storeProduct.type
           )
         ) {
-          console.log("중복된 즐겨찾기");
-        } else {
           storeMap.push(storeProduct);
         }
       }
@@ -218,7 +209,6 @@ export default {
     },
     // 웹캠 초기화
     initWebcamStream() {
-      console.log(isMobile ? "Mobile" : "PC");
       if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         return navigator.mediaDevices
           .getUserMedia({
@@ -238,17 +228,13 @@ export default {
                 this.videoRatio =
                   this.video.offsetHeight / this.video.offsetWidth;
                 this.isVideoStreamReady = true;
-                console.log("webcam stream initialized");
                 resolve();
               };
             });
           })
           .catch((error) => {
-            console.log("failed to initialize webcam stream", error);
             throw error;
           });
-      } else {
-        console.log("failed");
       }
     },
     // 인공지능 모델 불러오기
@@ -258,17 +244,13 @@ export default {
         .then((model) => {
           this.model = model;
           this.isModelReady = true;
-          console.log("model loaded: ", model);
         })
         .catch((error) => {
-          console.log("failed to load the model", error);
           throw error;
         });
     },
     // 감지 모델 저장 및 초기화
     initMap() {
-      console.log("-----isDetect : ", this.getIsDetect);
-      console.log("------------------path : ", this.path);
       let min = this.count / 2;
       cntMap.forEach(function (item, index) {
         if (item >= min) nameSet.add(index);
@@ -281,17 +263,8 @@ export default {
         else this.tts(this.alertText);
       } else {
         nameSet.forEach((item) => {
-          console.log(
-            "이름 : ",
-            classesDir[item].name,
-            " , 종류 : ",
-            classesDir[item].type
-          );
           this.product.name = classesDir[item].name;
           this.product.type = classesDir[item].type;
-          console.log("product : ", this.product);
-          console.log("searchName : ", this.searchName);
-          console.log("searchType : ", this.searchType);
           if (
             this.product.name == this.searchName &&
             this.product.type == this.searchType
@@ -320,9 +293,7 @@ export default {
     },
     // 모델 실시간 감지
     detectFrame(video, model) {
-      console.log("detect");
       if (this.getIsDetect) {
-        console.log("detect에서 모델 종료");
         return;
       }
       tf.engine().startScope();
@@ -345,8 +316,6 @@ export default {
           this.startTimer();
         })
         .catch((error) => {
-          console.log("Failed to init stream and/or model");
-          console.log(error);
           this.initFailMessage = error;
         });
     },
@@ -372,7 +341,6 @@ export default {
         if (score > threshold) {
           this.count++;
           let index = classes[i];
-          console.log("--------", classesDir[index].name);
           if (cntMap.has(index)) {
             cntMap.set(index, cntMap.get(index) + 1);
           } else cntMap.set(index, 1);
@@ -389,7 +357,6 @@ export default {
       }
     },
     startTimer() {
-      console.log("시작");
       this.timer = setInterval(this.initMap, 1000);
     },
   },
@@ -397,7 +364,6 @@ export default {
     await this.storeIsDetect(true);
     this.isLoading = true;
     this.isIOS = false;
-    console.log("camera1 : ", this.getIsDetect);
     if (this.path == "search") {
       if (this.$route.params.name == null) {
         this.$router.push("/search");
@@ -407,7 +373,6 @@ export default {
     }
     setTimeout(() => {
       this.storeIsDetect(false);
-      console.log("camera2 : ", this.getIsDetect);
       this.streamPromise = this.initWebcamStream();
       this.loadModelAndStartDetecting();
     }, 1000);
