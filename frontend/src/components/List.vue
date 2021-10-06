@@ -5,7 +5,7 @@
         block
         class="text-h6 py-3"
         to="/favorites/add"
-        aria-label="음료 추가하기 버튼"
+        aria-label="음료 추가하기"
       >
         음료 추가하기
       </v-btn>
@@ -28,14 +28,14 @@
               <v-btn
                 icon
                 @click="openDetailDialog(item)"
-                aria-label="세부 정보 조회 버튼"
+                aria-label="세부 정보 조회"
               >
                 <v-icon>mdi-information</v-icon>
               </v-btn>
 
               <v-btn
                 icon
-                aria-label="탐색 시작 버튼"
+                aria-label="탐색 시작"
                 v-if="mode == 'search'"
                 @click="searchStart(item)"
               >
@@ -48,7 +48,7 @@
                 v-model="dialog[i]"
               >
                 <template v-slot:activator="{ on }">
-                  <v-btn icon color="red" aria-label="음료 삭제 버튼" v-on="on">
+                  <v-btn icon color="red" aria-label="음료 삭제" v-on="on">
                     <v-icon>mdi-delete</v-icon>
                   </v-btn>
                 </template>
