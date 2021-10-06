@@ -25,21 +25,13 @@
             <span class="secondaryInfo"></span>
           </div>
           <div v-if="pathCheck(1)">
-            <v-btn
-              icon
-              @click="openDetailDialog()"
-              aria-label="세부 정보 조회 버튼"
-            >
+            <v-btn icon @click="openDetailDialog()" aria-label="세부 정보 조회">
               <v-icon color="accent">mdi-information</v-icon>
               <span class="detailInfo"> 세부정보 확인하기</span>
             </v-btn>
           </div>
           <div v-else-if="pathCheck(2)">
-            <v-btn
-              icon
-              @click="favoriteRegist()"
-              aria-label="즐겨찾기 등록 버튼"
-            >
+            <v-btn icon @click="favoriteRegist()" aria-label="즐겨찾기 등록">
               <v-icon color="accent">mdi-clipboard-list-outline</v-icon>
               <span class="detailInfo"> 즐겨찾기 등록</span>
             </v-btn>

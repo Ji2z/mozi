@@ -8,7 +8,7 @@
             max-height="150"
             max-width="250"
             src="@/assets/mz_error.png"
-            alt="에러페이지 이미지"
+            alt="에러페이지"
             tabindex="0"
           ></v-img>
           <div class="px-5">
