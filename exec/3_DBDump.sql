@@ -1,3 +1,5 @@
+CREATE SCHEMA 'ssafy' DEFAULT CHARACTER SET utf8;
+
 use ssafy;
 
 CREATE TABLE IF NOT EXISTS beverage (
