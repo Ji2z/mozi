@@ -1,6 +1,47 @@
 #### 특화 프로젝트
 
+```
+1. 서비스명 : mozi
+
+2. 서비스 내용 : 시각장애인을 위한 음료수 인식 서비스
+
+3. Front End Framework : Vue, Vuetify
+
+4. Back End Framework : Spring Boot
+
+5. Data Base :  MySQL
+
+6. 주요 기술 스택 : MySQL, Tensorflow, Tensorflow.js, Java, Python, Docker, Jenkins
+
+7. 팀원 역활 :
+     류희영 - B/E, F/E, 디자인, 데이터 수집/전처리
+     신지예 - B/E, F/E, CI/CD, 디자인, 데이터 수집/전처리
+     안영진 - F/E, AI 모델 학습, 디자인, 데이터 수집/전처리, 스케줄 관리
+     박서희 - AI 모델 학습, 디자인, 데이터 수집/전처리
+     이진영 - AI 모델 학습, 디자인, 데이터 수집/전처리, PM
+
+8. 서비스 URL : https://j5a603.p.ssafy.io/scan
+
+9. 구현 기능 :
+      스캔모드 - 실시간으로 앞에 음료수가 놓여있는지 존재 여부와, 존재한다면 어떤 음료수인지 인식하여 세부정보 제공
+      제공하는 음료수 세부정보 - 음료 이름, 용기 정보, 음료 카테고리, 소비자 상담실 전화번호, 알레르기 성분, 주의사항, 특이사항
+      탐색모드 - 즐겨찾기에 등록된 음료수를 바탕으로 현재 앞에 음료가 놓여있는지 판별
+      즐겨찾기 - 카메라 인식을 통한 즐겨찾는 음료수 저장, 즐겨찾는 음료수 삭제 (local storage 사용)
+      사용법 - 시각장애인을 위해 스크린 리더로 읽기 편한 사용법 안내 문구 작성
+      음성안내 - 자체 스크린 리더 없이도 음료 인식의 결과를 음성으로 안내하는 기능 on/off
+
+11. 기술 특이점 (핵심 기술) : 
+     ML기법 중 하나인 Object Detection을 Tensorflow로 구현하여 총 38개의 음료수를 구분하고 인식할 수 있는 인공지능 모델을 제작
+     제작된 인공지능 모델을 Tensorflow.js를 사용하여 프론트엔드에 모델 장착 후 인식
+     자체 스크린 리더 없이도 음료수의 존재 여부와, 인식 결과를 음성으로 안내
+
+12. 특장점 (독창적인 기술) : 
+       실시간으로 카메라에 비춰지는 상황을 분석하여 앞에 놓여진 음료수를 인식하는 딥러닝 모델 개발
+       독자적인 인공지능 모델에 맞게 감지 상황을 결정하는 알고리즘 개발
+```
+
 # 주제
+
 *시각장애인을 위한 음료 구분 서비스*           
 
 ```
@@ -29,12 +70,10 @@
 ### Git Branch
 - master : 배포
 - develop : 기능
-- ### feature : 기능 추가 ( feature/FE-login , feature/BE-login )
+- feature : 기능 추가 ( feature/FE-login , feature/BE-login )
 
 ### Code Convention
 - 변수명 : Camel Case
-
-
 
 # 기획
 
@@ -52,19 +91,7 @@
 
 ​	![data](/uploads/9c41331c59476ad033e09749906b1d18/data.PNG)
 
-### 진행 상황
 
-- Notion
-
-  - ![1week](/uploads/f89e7c1c2b3d17e2c61ff819a067e1ea/1week.PNG)
-
-  - link
-
-    https://www.notion.so/PJT-Main-ffab8d37257c4324b0a53d6eee04938a
-
-- jira
-
-  - ![image](/uploads/4598f438b2fd77b5282b58b25416e8b0/image.png)
 
 
 
