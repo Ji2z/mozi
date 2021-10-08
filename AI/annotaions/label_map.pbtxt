@@ -1,0 +1,189 @@
+item {
+  id: 1
+  name: 'demisoda_grapefruit'
+}
+
+item {
+  id: 2
+  name: 'demisoda_apple'
+}
+
+item {
+  id: 3
+  name: 'gatorade'
+}
+
+item {
+  id: 4
+  name: 'idh'
+}
+
+item {
+  id: 5
+  name: 'letsbe'
+}
+
+item {
+  id: 6
+  name: 'top_americano'
+}
+
+item {
+  id: 7
+  name: 'mountaindew'
+}
+
+item {
+  id: 8
+  name: 'top_latte'
+}
+
+item {
+  id: 9
+  name: 'condition'
+}
+
+item {
+  name: 'condition_lady'
+  id: 10
+}
+
+item {
+  name: 'condition_ceo'
+  id: 11
+}
+
+item {
+  name: 'cocacola'
+  id: 12
+}
+
+item {
+  name: 'cocacola_zero'
+  id: 13
+}
+
+item {
+  name: 'terra'
+  id: 14
+}
+
+item {
+  name: 'powerade'
+  id: 15
+}
+
+item {
+  name: 'pepsi'
+  id: 16
+}
+
+item {
+  name: 'pocarisweat'
+  id: 17
+}
+
+item {
+  name: 'skybori'
+  id: 18
+}
+
+item {
+  name: 'hite'
+  id: 19
+}
+
+item {
+  name: 'hotsix'
+  id: 20
+}
+
+item {
+  name: 'fanta_orange'
+  id: 21
+}
+
+item {
+  name: 'fanta_pineapple'
+  id: 22
+}
+
+item {
+  name: 'monster_ultra'
+  id: 23
+}
+
+item {
+  name: 'monster_green'
+  id: 24
+}
+
+item {
+  name: 'milkis'
+  id: 25
+}
+
+item {
+  name: 'bacchus'
+  id: 26
+}
+
+item {
+  name: 'bongbong'
+  id: 27
+}
+
+item {
+  name: 'viraksikhye'
+  id: 28
+}
+
+item {
+  name: 'vita500'
+  id: 29
+}
+
+item {
+  name: 'sprite'
+  id: 30
+}
+
+item {
+  name: 'corn_silk_tea'
+  id: 31
+}
+
+item {
+  name: 'welchs_grape'
+  id: 32
+}
+
+item {
+  name: 'welchs_whitegrape'
+  id: 33
+}
+
+item {
+  name: 'jinro_soju'
+  id: 34
+}
+
+item {
+  name: 'chamisul_fresh'
+  id: 35
+}
+
+item {
+  name: 'cider'
+  id: 36
+}
+
+item {
+  name: 'cass_light'
+  id: 37
+}
+
+item {
+  name: 'cass'
+  id: 38
+}
